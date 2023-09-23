@@ -6,6 +6,7 @@
    <description>
       <short>
          <en>GDPR Records of Processing Activities</en>
+         <fr>RGPD Enregistrements des activités de traitement</fr>
          <pl>RODO Rejestr Czynności Przetwarzania</pl>
       </short>
       <long>
@@ -27,6 +28,24 @@
          
          Based on DPO Register plugin, by Karhel Tmarr plugin. Some code was included or is similar to DPO Register.
          ]]></en>
+         <fr><![CDATA[
+         Pour etre conforme à l'article 30 du RGPD. Créer et maintenir un registre des traitements est requis par l'UE au regard du traitement des données personnels. L'enregistrement est par entité ou à plat.
+
+         Principales fonctionnalités :
+         * Information sur les activité de traitement
+         * Dictionnaire des catégories de données personnelles
+         * Plusieurs type de données par enregistrement
+         * Cadre de la rétention de donénes (base légal, contrat, autre)
+         * Assigner les contrat en sélectionnant le type : responsable, controleur, tiers, interne...
+         * Plusieurs bases légales par enregistrement
+         * Dictionnaire des mesures de sécurité (il peut être dissocié par entité)
+         * Affection de logiciel
+         * Sortie PDF
+         * Chaque entité peut avoir des informations de controle différente : représentant légal, DPO et nom, différents types de contrats
+         * Configuration additionnelle
+         
+         Basé sur le plugin DPO Register, par Karhel Tmarr. Une partie du code est repris de ce plugin.
+         ]]></fr>
          <pl><![CDATA[
          Spełnij wymogi 30 artykułu RODO. Stwórz i zarządzaj Rejestrem Czynności Przetwarzania wymaganym przez regulacje UE w zakresie przetwarzania danych osobowych. Rejest dla jednostki lub płaski.
          
@@ -62,6 +81,7 @@
    </versions>
    <langs>
       <lang>en_GB</lang>
+      <lang>fr_FR</lang>
       <lang>pl_PL</lang>
    </langs>
    <license>GPL v3+</license>
@@ -71,6 +91,11 @@
          <tag>Inventory</tag>
          <tag>Management</tag>
       </en>
+      <fr>
+         <tag>RGPD</tag>
+         <tag>Inventaire</tag>
+         <tag>Management</tag>
+      </fr>
       <pl>
          <tag>RODO</tag>
          <tag>Inwentaryzacja</tag>
