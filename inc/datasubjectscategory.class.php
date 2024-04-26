@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,9 +44,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaDataSubjectsCategory extends CommonDropdown {
+class PluginRgpdDataSubjectsCategory extends CommonDropdown {
 
-   static $rightname = 'plugin_gdprropa_datasubjectscategory';
+   static $rightname = 'plugin_rgpd_datasubjectscategory';
 
    public $dohistory = true;
 
@@ -54,7 +54,7 @@ class PluginGdprropaDataSubjectsCategory extends CommonDropdown {
 
    static function getTypeName($nb = 0) {
 
-      return _n("Category of data subjects", "Categories of data subjects", $nb, 'gdprropa');
+      return _n("Category of data subjects", "Categories of data subjects", $nb, 'rgpd');
    }
 
    function prepareInputForAdd($input) {
@@ -73,8 +73,8 @@ class PluginGdprropaDataSubjectsCategory extends CommonDropdown {
 
    function cleanDBonPurge() {
 
-      $rel = new PluginGdprropaRecord_DataSubjectsCategory();
-      $rel->deleteByCriteria(['plugin_gdprropa_datasubjectscategories_id' => $this->fields['id']]);
+      $rel = new PluginRgpdRecord_DataSubjectsCategory();
+      $rel->deleteByCriteria(['plugin_rgpd_datasubjectscategories_id' => $this->fields['id']]);
 
    }
 
