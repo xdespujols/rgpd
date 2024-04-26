@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,15 +30,16 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
+
 /*
 // TODO sprawdzic:
       RECORD przypisany do ENTITIES_ID,
@@ -55,9 +56,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaRecord extends CommonDBTM {
+class PluginRgpdRecord extends CommonDBTM {
 
-   static $rightname = 'plugin_gdprropa_record';
+   static $rightname = 'plugin_rgpd_record';
 
    public $dohistory = true;
 
@@ -77,7 +78,7 @@ class PluginGdprropaRecord extends CommonDBTM {
 
    static function getTypeName($nb = 0) {
 
-      return _n("GDPR Record of Processing Activity", "GDPR Records of Processing Activities", $nb, 'gdprropa');
+      return _n("GDPR Record of Processing Activity", "GDPR Records of Processing Activities", $nb, 'rgpd');
    }
 
    function showForm($id, $options = []) {
@@ -88,14 +89,14 @@ class PluginGdprropaRecord extends CommonDBTM {
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Title", 'gdprropa') . "</td>";
+      echo "<td>" . __("Title", 'rgpd') . "</td>";
       echo "<td colspan='2'>";
       $title = Html::cleanInputText($this->fields['name']);
       echo "<input type='text' style='width:98%' maxlength=250 name='name' required value='" . $title . "'>";
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Purpose (GDPR Article 30 1b)", 'gdprropa') . "</td>";
+      echo "<td>" . __("Purpose (GDPR Article 30 1b)", 'rgpd') . "</td>";
       echo "<td colspan='2'>";
       $purpose = Html::setSimpleTextContent($this->fields['content']);
       echo "<textarea style='width:98%' name='content' required maxlength='1000' rows='3'>" . $purpose . "</textarea>";
@@ -109,11 +110,11 @@ class PluginGdprropaRecord extends CommonDBTM {
       ]);
       echo "</td></tr>";
 
-      echo "<tr class='tab_bg_1'><td>" . __("Storage medium", 'gdprropa') . "</td>";
+      echo "<tr class='tab_bg_1'><td>" . __("Storage medium", 'rgpd') . "</td>";
       echo "<td colspan='2'>";
       self::dropdownStorageMedium('storage_medium', $this->fields['storage_medium']);
       echo "</td></tr>";
-      echo "<tr class='tab_bg_1'><td>" . __("PIA required", 'gdprropa') . "</td>";
+      echo "<tr class='tab_bg_1'><td>" . __("PIA required", 'rgpd') . "</td>";
       echo "<td>";
       $rand = Dropdown::showYesNo('pia_required', $this->fields['pia_required']);
 
@@ -124,16 +125,16 @@ class PluginGdprropaRecord extends CommonDBTM {
       Ajax::updateItemOnSelectEvent(
          "dropdown_pia_required$rand",
          'pia_status_td',
-         $CFG_GLPI['root_doc'] . '/plugins/gdprropa/ajax/record_pia_required_dropdown.php',
+         $CFG_GLPI['root_doc'] . '/plugins/rgpd/ajax/record_pia_required_dropdown.php',
          $params
       );
 
       echo "<td colspan='2' id='pia_status_td'>";
-      PluginGdprropaRecord::showPIAStatus($this->fields);
+      PluginRgpdRecord::showPIAStatus($this->fields);
       echo "</td>";
 
       echo "</tr>";
-      echo "<tr class='tab_bg_1'><td>" . __("Consent required", 'gdprropa') . "</td>";
+      echo "<tr class='tab_bg_1'><td>" . __("Consent required", 'rgpd') . "</td>";
       echo "<td colspan='2'>";
       $rand = Dropdown::showYesNo('consent_required', $this->fields['consent_required']);
 
@@ -144,24 +145,24 @@ class PluginGdprropaRecord extends CommonDBTM {
       Ajax::updateItemOnSelectEvent(
          "dropdown_consent_required$rand",
          'consent_storage_tr',
-         $CFG_GLPI['root_doc'] . '/plugins/gdprropa/ajax/record_consent_required_dropdown.php',
+         $CFG_GLPI['root_doc'] . '/plugins/rgpd/ajax/record_consent_required_dropdown.php',
          $params
       );
 
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1' id='consent_storage_tr'>";
-      PluginGdprropaRecord::showConsentRequired($this->fields);
+      PluginRgpdRecord::showConsentRequired($this->fields);
       echo "</tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("First entry date", 'gdprropa') . "</td>";
+      echo "<td>" . __("First entry date", 'rgpd') . "</td>";
       echo "<td colspan='2'>";
       Html::showDateField('first_entry_date', ['value' => $this->fields['first_entry_date']]);
       echo "</td></tr>";
 
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Additional information", 'gdprropa') . "</td>";
+      echo "<td>" . __("Additional information", 'rgpd') . "</td>";
       echo "<td colspan='2'>";
       $additional_info = Html::setSimpleTextContent($this->fields['additional_info']);
       echo "<textarea style='width: 98%;' name='additional_info' maxlength='1000' rows='3'>" . $additional_info . "</textarea>";
@@ -183,7 +184,7 @@ class PluginGdprropaRecord extends CommonDBTM {
    static function showConsentRequired($data = []) {
 
       if ($data['consent_required']) {
-         echo "<td>" . __("Consent storage", 'gdprropa') . "</td>";
+         echo "<td>" . __("Consent storage", 'rgpd') . "</td>";
          echo "<td colspan='2'>";
          $consent_storage = Html::setSimpleTextContent($data['consent_storage']);
          echo "<textarea style='width: 98%;' name='consent_storage' maxlength='1000' rows='3'>" . $consent_storage . "</textarea>";
@@ -199,16 +200,16 @@ class PluginGdprropaRecord extends CommonDBTM {
       $this
          ->addDefaultFormTab($ong)
          ->addStandardTab(__CLASS__, $ong, $options)
-         ->addStandardTab('PluginGdprropaRecord_DataSubjectsCategory', $ong, $options)
-         ->addStandardTab('PluginGdprropaRecord_LegalBasisAct', $ong, $options)
-         ->addStandardTab('PluginGdprropaRecord_Retention', $ong, $options)
-         ->addStandardTab('PluginGdprropaRecord_Contract', $ong, $options)
-         ->addStandardTab('PluginGdprropaRecord_PersonalDataCategory', $ong, $options)
-         ->addStandardTab('PluginGdprropaRecord_Software', $ong, $options)
-         ->addStandardTab('PluginGdprropaRecord_SecurityMeasure', $ong, $options)
+         ->addStandardTab('PluginRgpdRecord_DataSubjectsCategory', $ong, $options)
+         ->addStandardTab('PluginRgpdRecord_LegalBasisAct', $ong, $options)
+         ->addStandardTab('PluginRgpdRecord_Retention', $ong, $options)
+         ->addStandardTab('PluginRgpdRecord_Contract', $ong, $options)
+         ->addStandardTab('PluginRgpdRecord_PersonalDataCategory', $ong, $options)
+         ->addStandardTab('PluginRgpdRecord_Software', $ong, $options)
+         ->addStandardTab('PluginRgpdRecord_SecurityMeasure', $ong, $options)
          ->addStandardTab('Document_Item', $ong, $options)
          ->addStandardTab('Notepad', $ong, $options)
-         ->addStandardTab('PluginGdprropaCreatePDF', $ong, $options)
+         ->addStandardTab('PluginRgpdCreatePDF', $ong, $options)
          ->addStandardTab('Log', $ong, $options);
 
       return $ong;
@@ -218,25 +219,25 @@ class PluginGdprropaRecord extends CommonDBTM {
 
       $this->deleteChildrenAndRelationsFromDb(
          [
-            PluginGdprropaRecord_Contract::class,
-            PluginGdprropaRecord_DataSubjectsCategory::class,
-            PluginGdprropaRecord_LegalBasisAct::class,
-            PluginGdprropaRecord_PersonalDataCategory::class,
-            PluginGdprropaRecord_Retention::class,
-            PluginGdprropaRecord_SecurityMeasure::class,
-            PluginGdprropaRecord_Software::class,
+            PluginRgpdRecord_Contract::class,
+            PluginRgpdRecord_DataSubjectsCategory::class,
+            PluginRgpdRecord_LegalBasisAct::class,
+            PluginRgpdRecord_PersonalDataCategory::class,
+            PluginRgpdRecord_Retention::class,
+            PluginRgpdRecord_SecurityMeasure::class,
+            PluginRgpdRecord_Software::class,
          ]
       );
 
-      $retention = new PluginGdprropaRecord_Retention();
-      $retention->deleteByCriteria(['plugin_gdprropa_records_id' => $this->fields['id']]);
+      $retention = new PluginRgpdRecord_Retention();
+      $retention->deleteByCriteria(['plugin_rgpd_records_id' => $this->fields['id']]);
 
    }
 
    static function getAllPiaStatusArray($withmetaforsearch = false) {
 
       $tab = [
-         self::PIA_STATUS_UNDEFINED => __("Undefined", 'gdprropa'),
+         self::PIA_STATUS_UNDEFINED => __("Undefined", 'rgpd'),
          self::PIA_STATUS_TODO => __("To do"),
          self::PIA_STATUS_QUALIFICATION => __("Qualification"),
          self::PIA_STATUS_APPROVAL => __("Approval"),
@@ -254,10 +255,10 @@ class PluginGdprropaRecord extends CommonDBTM {
    static function getAllStorageMediumArray($withmetaforsearch = false) {
 
       $tab = [
-         self::STORAGE_MEDIUM_UNDEFINED => __("Undefined", 'gdprropa'),
-         self::STORAGE_MEDIUM_PAPER_ONLY => __("Paper only", 'gdprropa'),
-         self::STORAGE_MEDIUM_MIXED => __("Paper and electronic", 'gdprropa'),
-         self::STORAGE_MEDIUM_ELECTRONIC => __("Electronic only", 'gdprropa'),
+         self::STORAGE_MEDIUM_UNDEFINED => __("Undefined", 'rgpd'),
+         self::STORAGE_MEDIUM_PAPER_ONLY => __("Paper only", 'rgpd'),
+         self::STORAGE_MEDIUM_MIXED => __("Paper and electronic", 'rgpd'),
+         self::STORAGE_MEDIUM_ELECTRONIC => __("Electronic only", 'rgpd'),
       ];
 
       if ($withmetaforsearch) {
@@ -327,7 +328,7 @@ class PluginGdprropaRecord extends CommonDBTM {
       $input['users_id_creator'] = Session::getLoginUserID();
 
       if (array_key_exists('pia_required', $input) && $input['pia_required'] == 0) {
-         $input['pia_status'] = PluginGdprropaRecord::PIA_STATUS_UNDEFINED;
+         $input['pia_status'] = PluginRgpdRecord::PIA_STATUS_UNDEFINED;
       }
 
       if (array_key_exists('consent_required', $input) && $input['consent_required'] == 0) {
@@ -342,7 +343,7 @@ class PluginGdprropaRecord extends CommonDBTM {
       $input['users_id_lastupdater'] = Session::getLoginUserID();
 
       if (array_key_exists('pia_required', $input) && $input['pia_required'] == 0) {
-         $input['pia_status'] = PluginGdprropaRecord::PIA_STATUS_UNDEFINED;
+         $input['pia_status'] = PluginRgpdRecord::PIA_STATUS_UNDEFINED;
       }
 
       if (array_key_exists('consent_required', $input) && $input['consent_required'] == 0) {
@@ -355,9 +356,9 @@ class PluginGdprropaRecord extends CommonDBTM {
    function post_updateItem($history = 1) {
 
       if (($this->fields['storage_medium'] == self::STORAGE_MEDIUM_PAPER_ONLY)
-         && (PluginGdprropaConfig::getConfig('system', 'remove_software_when_paper_only'))) {
-         $del = new PluginGdprropaRecord_Software();
-         $del->deleteByCriteria(['plugin_gdprropa_records_id' => $this->fields['id']]);
+         && (PluginRgpdConfig::getConfig('system', 'remove_software_when_paper_only'))) {
+         $del = new PluginRgpdRecord_Software();
+         $del->deleteByCriteria(['plugin_rgpd_records_id' => $this->fields['id']]);
       }
    }
 
@@ -393,7 +394,7 @@ class PluginGdprropaRecord extends CommonDBTM {
          'id' => '3',
          'table' => $this->getTable(),
          'field' => 'content',
-         'name' => __("Purpose", 'gdprropa'),
+         'name' => __("Purpose", 'rgpd'),
          'massiveaction' => false,
          'htmltext' => true
       ];
@@ -402,7 +403,7 @@ class PluginGdprropaRecord extends CommonDBTM {
          'id' => '4',
          'table' => $this->getTable(),
          'field' => 'additional_info',
-         'name' => __("Additional information", 'gdprropa'),
+         'name' => __("Additional information", 'rgpd'),
          'massiveaction' => true,
          'htmltext' => true
       ];
@@ -434,7 +435,7 @@ class PluginGdprropaRecord extends CommonDBTM {
          'id' => '8',
          'table' => $this->getTable(),
          'field' => 'pia_required',
-         'name' => __("PIA required", 'gdprropa'),
+         'name' => __("PIA required", 'rgpd'),
          'massiveaction' => true,
          'datatype' => 'bool',
       ];
@@ -443,7 +444,7 @@ class PluginGdprropaRecord extends CommonDBTM {
          'id' => '9',
          'table' => $this->getTable(),
          'field' => 'pia_status',
-         'name' => __("PIA status", 'gdprropa'),
+         'name' => __("PIA status", 'rgpd'),
          'searchtype' => ['equals', 'notequals'],
          'massiveaction' => true,
          'datatype' => 'specific',
@@ -453,7 +454,7 @@ class PluginGdprropaRecord extends CommonDBTM {
          'id' => '10',
          'table' => $this->getTable(),
          'field' => 'storage_medium',
-         'name' => __("Storage medium", 'gdprropa'),
+         'name' => __("Storage medium", 'rgpd'),
          'searchtype' => ['equals', 'notequals'],
          'massiveaction' => true,
          'datatype' => 'specific'
@@ -461,32 +462,32 @@ class PluginGdprropaRecord extends CommonDBTM {
 
       $tab = array_merge(
          $tab,
-         PluginGdprropaRecord_Contract::rawSearchOptionsToAdd()
+         PluginRgpdRecord_Contract::rawSearchOptionsToAdd()
       );
 
       $tab = array_merge(
          $tab,
-         PluginGdprropaRecord_LegalBasisAct::rawSearchOptionsToAdd()
+         PluginRgpdRecord_LegalBasisAct::rawSearchOptionsToAdd()
       );
 
       $tab = array_merge(
          $tab,
-         PluginGdprropaRecord_DataSubjectsCategory::rawSearchOptionsToAdd()
+         PluginRgpdRecord_DataSubjectsCategory::rawSearchOptionsToAdd()
       );
 
       $tab = array_merge(
          $tab,
-         PluginGdprropaRecord_SecurityMeasure::rawSearchOptionsToAdd()
+         PluginRgpdRecord_SecurityMeasure::rawSearchOptionsToAdd()
       );
 
       $tab = array_merge(
          $tab,
-         PluginGdprropaRecord_PersonalDataCategory::rawSearchOptionsToAdd()
+         PluginRgpdRecord_PersonalDataCategory::rawSearchOptionsToAdd()
       );
 
       $tab = array_merge(
          $tab,
-         PluginGdprropaRecord_Software::rawSearchOptionsToAdd()
+         PluginRgpdRecord_Software::rawSearchOptionsToAdd()
       );
 
       return $tab;
