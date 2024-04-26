@@ -111,13 +111,6 @@ class PluginGdprropaSecurityMeasure extends CommonDropdown {
       return parent::getSpecificValueToSelect($field, $name, $values, $options);
    }
 
-   function displaySpecificTypeField2($id, $field = []) {
-
-      if ($field['name'] == 'type') {
-         self::dropdownTypes($field['name'], $this->fields[$field['name']], true);
-      }
-   }
-
    static function dropdownTypes($name, $value = 0, $display = true) {
 
       return Dropdown::showFromArray($name, self::getAllTypesArray(), [
