@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,7 +44,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaProfile extends Profile {
+class PluginRgpdProfile extends Profile {
 
    static $rightname = "profile";
 
@@ -53,7 +53,7 @@ class PluginGdprropaProfile extends Profile {
       if ($item->getType() == Profile::class) {
          if ($item->getField('id')
             && ($item->getField('interface') != 'helpdesk')) {
-            return PluginGdprropaRecord::getTypeName(2);
+            return PluginRgpdRecord::getTypeName(2);
          }
       }
 
@@ -136,13 +136,13 @@ class PluginGdprropaProfile extends Profile {
    static function createFirstAccess($ID) {
 
       self::addDefaultProfileInfos($ID, [
-         'plugin_gdprropa_record' => CREATE | READ | UPDATE | DELETE | PURGE | READNOTE | UPDATENOTE,
-         'plugin_gdprropa_legalbasisact' => CREATE | READ | UPDATE | DELETE | PURGE,
-         'plugin_gdprropa_securitymeasure' => CREATE | READ | UPDATE | DELETE | PURGE,
-         'plugin_gdprropa_datasubjectscategory' => CREATE | READ | UPDATE | DELETE | PURGE,
-         'plugin_gdprropa_controllerinfo' => CREATE | READ | UPDATE,
-         'plugin_gdprropa_personaldatacategory' => CREATE | READ | UPDATE | DELETE | PURGE | READNOTE | UPDATENOTE,
-         'plugin_gdprropa_createpdf' => CREATE,
+         'plugin_rgpd_record' => CREATE | READ | UPDATE | DELETE | PURGE | READNOTE | UPDATENOTE,
+         'plugin_rgpd_legalbasisact' => CREATE | READ | UPDATE | DELETE | PURGE,
+         'plugin_rgpd_securitymeasure' => CREATE | READ | UPDATE | DELETE | PURGE,
+         'plugin_rgpd_datasubjectscategory' => CREATE | READ | UPDATE | DELETE | PURGE,
+         'plugin_rgpd_controllerinfo' => CREATE | READ | UPDATE,
+         'plugin_rgpd_personaldatacategory' => CREATE | READ | UPDATE | DELETE | PURGE | READNOTE | UPDATENOTE,
+         'plugin_rgpd_createpdf' => CREATE,
       ], true);
    }
 
@@ -150,9 +150,9 @@ class PluginGdprropaProfile extends Profile {
 
       $rights = [
          [
-            'itemtype' => PluginGdprropaRecord::class,
-            'label' => PluginGdprropaRecord::getTypeName(2),
-            'field' => PluginGdprropaRecord::$rightname,
+            'itemtype' => PluginRgpdRecord::class,
+            'label' => PluginRgpdRecord::getTypeName(2),
+            'field' => PluginRgpdRecord::$rightname,
             'rights' => [
                CREATE => __("Create"),
                READ => __("Read"),
@@ -164,9 +164,9 @@ class PluginGdprropaProfile extends Profile {
             ]
          ],
          [
-            'itemtype' => PluginGdprropaLegalBasisAct::class,
-            'label' => PluginGdprropaLegalBasisAct::getTypeName(2),
-            'field' => PluginGdprropaLegalBasisAct::$rightname,
+            'itemtype' => PluginRgpdLegalBasisAct::class,
+            'label' => PluginRgpdLegalBasisAct::getTypeName(2),
+            'field' => PluginRgpdLegalBasisAct::$rightname,
             'rights' => [
                CREATE => __("Create"),
                READ => __("Read"),
@@ -176,9 +176,9 @@ class PluginGdprropaProfile extends Profile {
             ]
          ],
          [
-            'itemtype' => PluginGdprropaSecurityMeasure::class,
-            'label' => PluginGdprropaSecurityMeasure::getTypeName(2),
-            'field' => PluginGdprropaSecurityMeasure::$rightname,
+            'itemtype' => PluginRgpdSecurityMeasure::class,
+            'label' => PluginRgpdSecurityMeasure::getTypeName(2),
+            'field' => PluginRgpdSecurityMeasure::$rightname,
             'rights' => [
                CREATE => __("Create"),
                READ => __("Read"),
@@ -188,9 +188,9 @@ class PluginGdprropaProfile extends Profile {
             ]
          ],
          [
-            'itemtype' => PluginGdprropaDataSubjectsCategory::class,
-            'label' => PluginGdprropaDataSubjectsCategory::getTypeName(2),
-            'field' => PluginGdprropaDataSubjectsCategory::$rightname,
+            'itemtype' => PluginRgpdDataSubjectsCategory::class,
+            'label' => PluginRgpdDataSubjectsCategory::getTypeName(2),
+            'field' => PluginRgpdDataSubjectsCategory::$rightname,
             'rights' => [
                CREATE => __("Create"),
                READ => __("Read"),
@@ -200,9 +200,9 @@ class PluginGdprropaProfile extends Profile {
             ]
          ],
          [
-            'itemtype' => PluginGdprropaControllerInfo::class,
-            'label' => PluginGdprropaControllerInfo::getTypeName(2),
-            'field' => PluginGdprropaControllerInfo::$rightname,
+            'itemtype' => PluginRgpdControllerInfo::class,
+            'label' => PluginRgpdControllerInfo::getTypeName(2),
+            'field' => PluginRgpdControllerInfo::$rightname,
             'rights' => [
                CREATE => __("Create"),
                READ => __("Read"),
@@ -210,9 +210,9 @@ class PluginGdprropaProfile extends Profile {
             ]
          ],
          [
-            'itemtype' => PluginGdprropaPersonalDataCategory::class,
-            'label' => PluginGdprropaPersonalDataCategory::getTypeName(2),
-            'field' => PluginGdprropaPersonalDataCategory::$rightname,
+            'itemtype' => PluginRgpdPersonalDataCategory::class,
+            'label' => PluginRgpdPersonalDataCategory::getTypeName(2),
+            'field' => PluginRgpdPersonalDataCategory::$rightname,
             'rights' => [
                CREATE => __("Create"),
                READ => __("Read"),
@@ -224,9 +224,9 @@ class PluginGdprropaProfile extends Profile {
             ]
          ],
          [
-            'itemtype' => PluginGdprropaCreatePDF::class,
-            'label' => PluginGdprropaCreatePDF::getTypeName(2),
-            'field' => PluginGdprropaCreatePDF::$rightname,
+            'itemtype' => PluginRgpdCreatePDF::class,
+            'label' => PluginRgpdCreatePDF::getTypeName(2),
+            'field' => PluginRgpdCreatePDF::$rightname,
             'rights' => [
                CREATE => __("Create"),
             ]
@@ -261,7 +261,7 @@ class PluginGdprropaProfile extends Profile {
          "SELECT *
           FROM `glpi_profilerights`
           WHERE `profiles_id`='" . $_SESSION['glpiactiveprofile']['id'] . "'
-            AND `name` LIKE 'plugin_gdprropa_%'"
+            AND `name` LIKE 'plugin_rgpd_%'"
       );
 
       foreach ($profiles as $prof) {
