@@ -41,7 +41,7 @@
  */
 
 include("../../../inc/includes.php");
-Plugin::load('gdprropa', true);
+Plugin::load('rgpd', true);
 
 if (strpos($_SERVER['PHP_SELF'], "record_consent_required_dropdown.php")) {
 
@@ -52,7 +52,7 @@ if (strpos($_SERVER['PHP_SELF'], "record_consent_required_dropdown.php")) {
 }
 
 if (array_key_exists('consent_required', $_POST) && $_POST['consent_required']) {
-   PluginGdprropaRecord::showConsentRequired($_POST);
+   PluginRgpdRecord::showConsentRequired($_POST);
 } else {
    echo '';
 }
