@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,9 +44,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaSecurityMeasure extends CommonDropdown {
+class PluginRgpdSecurityMeasure extends CommonDropdown {
 
-   static $rightname = 'plugin_gdprropa_securitymeasure';
+   static $rightname = 'plugin_rgpd_securitymeasure';
 
    public $dohistory = true;
 
@@ -60,7 +60,7 @@ class PluginGdprropaSecurityMeasure extends CommonDropdown {
 
    static function getTypeName($nb = 0) {
 
-      return _n("Security Measure", "Security Measures", $nb, 'gdprropa');
+      return _n("Security Measure", "Security Measures", $nb, 'rgpd');
    }
 
    function getAdditionalFields() {
@@ -121,9 +121,9 @@ class PluginGdprropaSecurityMeasure extends CommonDropdown {
 
       return [
          //'' => Dropdown::EMPTY_VALUE,
-         self::SECURITYMEASURE_TYPE_ORGANIZATION => __("Organizational", 'gdprropa'),
-         self::SECURITYMEASURE_TYPE_PHYSICAL     => __("Physical", 'gdprropa'),
-         self::SECURITYMEASURE_TYPE_IT           => __("IT", 'gdprropa')
+         self::SECURITYMEASURE_TYPE_ORGANIZATION => __("Organizational", 'rgpd'),
+         self::SECURITYMEASURE_TYPE_PHYSICAL     => __("Physical", 'rgpd'),
+         self::SECURITYMEASURE_TYPE_IT           => __("IT", 'rgpd')
       ];
    }
 
@@ -143,8 +143,8 @@ class PluginGdprropaSecurityMeasure extends CommonDropdown {
 
    function cleanDBonPurge() {
 
-      $rel = new PluginGdprropaRecord_SecurityMeasure();
-      $rel->deleteByCriteria(['plugin_gdprropa_securitymeasures_id' => $this->fields['id']]);
+      $rel = new PluginRgpdRecord_SecurityMeasure();
+      $rel->deleteByCriteria(['plugin_rgpd_securitymeasures_id' => $this->fields['id']]);
 
    }
 
@@ -153,7 +153,7 @@ class PluginGdprropaSecurityMeasure extends CommonDropdown {
       global $DB;
 
       $p = [
-         'name'             => 'plugin_gdprropa_securitymeasures_id',
+         'name'             => 'plugin_rgpd_securitymeasures_id',
          'value'            => '',
          'all'              => 0,
          'width'            => '80%',
@@ -198,26 +198,26 @@ class PluginGdprropaSecurityMeasure extends CommonDropdown {
 
          $query = '
             SELECT
-               `glpi_plugin_gdprropa_securitymeasures`.`id`,
-               `glpi_plugin_gdprropa_securitymeasures`.`name`,
-               `glpi_plugin_gdprropa_securitymeasures`.`type`,
-               `glpi_plugin_gdprropa_securitymeasures`.`entities_id`,
+               `glpi_plugin_rgpd_securitymeasures`.`id`,
+               `glpi_plugin_rgpd_securitymeasures`.`name`,
+               `glpi_plugin_rgpd_securitymeasures`.`type`,
+               `glpi_plugin_rgpd_securitymeasures`.`entities_id`,
                `glpi_entities`.`completename`
             FROM
-               `glpi_plugin_gdprropa_securitymeasures` 
+               `glpi_plugin_rgpd_securitymeasures` 
             LEFT JOIN
-               `glpi_entities` ON (`glpi_plugin_gdprropa_securitymeasures`.`entities_id` = `glpi_entities`.`id`)
+               `glpi_entities` ON (`glpi_plugin_rgpd_securitymeasures`.`entities_id` = `glpi_entities`.`id`)
             WHERE
                (
-                  (`glpi_plugin_gdprropa_securitymeasures`.`is_recursive` = 1 AND
-                   `glpi_plugin_gdprropa_securitymeasures`.`entities_id` IN (' . implode(',', $entities) . ')
+                  (`glpi_plugin_rgpd_securitymeasures`.`is_recursive` = 1 AND
+                   `glpi_plugin_rgpd_securitymeasures`.`entities_id` IN (' . implode(',', $entities) . ')
                   ) OR (
-                   `glpi_plugin_gdprropa_securitymeasures`.`entities_id` = ' . $p['entity'] . '
+                   `glpi_plugin_rgpd_securitymeasures`.`entities_id` = ' . $p['entity'] . '
                   )
                )
             ORDER BY
-               FIELD(`glpi_plugin_gdprropa_securitymeasures`.`entities_id`, 4) DESC,
-               `glpi_plugin_gdprropa_securitymeasures`.`type`';
+               FIELD(`glpi_plugin_rgpd_securitymeasures`.`entities_id`, 4) DESC,
+               `glpi_plugin_rgpd_securitymeasures`.`type`';
 
          $types = self::getAllTypesArray();
 
@@ -305,7 +305,7 @@ class PluginGdprropaSecurityMeasure extends CommonDropdown {
          'id'                 => '3',
          'table'              => $this->getTable(),
          'field'              => 'type',
-         'name'               => __("Type", 'gdprropa'),
+         'name'               => __("Type", 'rgpd'),
          'searchtype'         => 'equals',
          'massiveaction'      => true,
          'datatype'           => 'specific'
