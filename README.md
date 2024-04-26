@@ -1,11 +1,11 @@
-# GLPI GDPRRoPA
+# GLPI GDPR / RGPD
 
 Based on [DPO Register](https://github.com/karhel/glpi-dporegister) plugin, by Karhel Tmarr. Some code was included or is similar to DPO Register.
-
+Based on [GDPRROPA](https://github.com/yild/gdprropa) plugin, Yild.
 
 Registry of Processing Activities for GDPR - [GLPI](https://github.com/glpi-project/glpi/) Plugin
 
-GDPR EU regulation require controllers (data administrators) to maintain Registry of Processing Activities (article 30 of GDPR) for each personal data processing.
+GDPR EU regulation require controllers (data administrators) to maintain Registry of Processing Activities (article 30 of GDPR) for each personal data processing.https://github.com/xdespujols/rgpd/tree/xdespujols-patch-1
 
 This plugin adds to GLPI managment of Processing Activities Registry, can be maintained for each entity.
 
@@ -25,7 +25,7 @@ Main features:
 
 ## Translation
 
-Currently en_GB and pl_PL translations available.
+Currently en_GB, fr_FR and pl_PL translations available.
 
 ## Documentation
 
