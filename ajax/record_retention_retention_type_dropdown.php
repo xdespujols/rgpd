@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,18 +30,18 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
 
 include("../../../inc/includes.php");
-Plugin::load('gdprropa', true);
+Plugin::load('rgpd', true);
 
 if (strpos($_SERVER['PHP_SELF'], 'record_retention_retention_type_dropdown.php')) {
 
@@ -55,16 +55,16 @@ if (array_key_exists('type', $_POST)) {
 
    switch ($_POST['type']) {
 
-      case PluginGdprropaRecord_Retention::RETENTION_TYPE_CONTRACT:
-         PluginGdprropaRecord_Retention::showContractInputs($_POST);
+      case PluginRgpdRecord_Retention::RETENTION_TYPE_CONTRACT:
+         PluginRgpdRecord_Retention::showContractInputs($_POST);
          break;
 
-      case PluginGdprropaRecord_Retention::RETENTION_TYPE_LEGALBASISACT:
-         PluginGdprropaRecord_Retention::showLegalBasesInputs($_POST);
+      case PluginRgpdRecord_Retention::RETENTION_TYPE_LEGALBASISACT:
+         PluginRgpdRecord_Retention::showLegalBasesInputs($_POST);
          break;
 
-      case PluginGdprropaRecord_Retention::RETENTION_TYPE_OTHER:
-         PluginGdprropaRecord_Retention::showOtherInputs($_POST);
+      case PluginRgpdRecord_Retention::RETENTION_TYPE_OTHER:
+         PluginRgpdRecord_Retention::showOtherInputs($_POST);
          break;
    }
 } else {
