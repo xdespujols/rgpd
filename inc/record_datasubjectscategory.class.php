@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,16 +44,16 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaRecord_DataSubjectsCategory extends CommonDBRelation {
+class PluginRgpdRecord_DataSubjectsCategory extends CommonDBRelation {
 
-   static public $itemtype_1 = 'PluginGdprropaRecord';
-   static public $items_id_1 = 'plugin_gdprropa_records_id';
-   static public $itemtype_2 = 'PluginGdprropaDataSubjectsCategory';
-   static public $items_id_2 = 'plugin_gdprropa_datasubjectscategories_id';
+   static public $itemtype_1 = 'PluginRgpdRecord';
+   static public $items_id_1 = 'plugin_rgpd_records_id';
+   static public $itemtype_2 = 'PluginRgpdDataSubjectsCategory';
+   static public $items_id_2 = 'plugin_rgpd_datasubjectscategories_id';
 
    static function getTypeName($nb = 0) {
 
-      return _n("Category of data subjects", "Categories of data subjects", $nb, 'gdprropa');
+      return _n("Category of data subjects", "Categories of data subjects", $nb, 'rgpd');
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -63,14 +63,14 @@ class PluginGdprropaRecord_DataSubjectsCategory extends CommonDBRelation {
       }
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
 
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                $nb = self::countForItem($item);
             }
 
-            return self::createTabEntry(PluginGdprropaRecord_DataSubjectsCategory::getTypeName($nb), $nb);
+            return self::createTabEntry(PluginRgpdRecord_DataSubjectsCategory::getTypeName($nb), $nb);
       }
 
       return '';
@@ -79,7 +79,7 @@ class PluginGdprropaRecord_DataSubjectsCategory extends CommonDBRelation {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
             self::showForRecord($item, $withtemplate);
             break;
       }
@@ -87,14 +87,14 @@ class PluginGdprropaRecord_DataSubjectsCategory extends CommonDBRelation {
       return true;
    }
 
-   static function showForRecord(PluginGdprropaRecord $record, $withtemplate = 0) {
+   static function showForRecord(PluginRgpdRecord $record, $withtemplate = 0) {
 
       $id = $record->fields['id'];
       if (!$record->can($id, READ)) {
          return false;
       }
 
-      $canedit = PluginGdprropaRecord::canUpdate();
+      $canedit = PluginRgpdRecord::canUpdate();
       $rand = mt_rand(1, mt_getrandmax());
 
       $iterator = self::getListForItem($record);
@@ -111,17 +111,17 @@ class PluginGdprropaRecord_DataSubjectsCategory extends CommonDBRelation {
          echo "<div class='firstbloc'>";
          echo "<form name='ticketitem_form$rand' id='ticketitem_form$rand' method='post'
             action='" . Toolbox::getItemTypeFormURL(__class__) . "'>";
-         echo "<input type='hidden' name='plugin_gdprropa_records_id' value='$id' />";
+         echo "<input type='hidden' name='plugin_rgpd_records_id' value='$id' />";
 
          echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th>" . __("Add Category of Data Subjects", 'gdprropa') . "</th></tr>";
+         echo "<tr class='tab_bg_2'><th>" . __("Add Category of Data Subjects", 'rgpd') . "</th></tr>";
          echo "<tr class='tab_bg_3'><td><center><strong>";
-         echo __("GDPR Article 30 1c", 'gdprropa');
+         echo __("GDPR Article 30 1c", 'rgpd');
          echo "</strong></center></td></tr>";
          echo "<tr class='tab_bg_1'><td width='80%' class='center'>";
-         PluginGdprropaDataSubjectsCategory::dropdown([
-            'addicon'  => PluginGdprropaDataSubjectsCategory::canCreate(),
-            'name' => 'plugin_gdprropa_datasubjectscategories_id',
+         PluginRgpdDataSubjectsCategory::dropdown([
+            'addicon'  => PluginRgpdDataSubjectsCategory::canCreate(),
+            'name' => 'plugin_rgpd_datasubjectscategories_id',
             'entity' => $record->fields['entities_id'],
             'entity_sons' => false,
             'used' => $used,
@@ -159,7 +159,7 @@ class PluginGdprropaRecord_DataSubjectsCategory extends CommonDBRelation {
          }
 
          $header_end .= "<th>" . __("Name") . "</th>";
-         $header_end .= "<th>" . __("Introduced in", 'gdprropa') . "</th>";
+         $header_end .= "<th>" . __("Introduced in", 'rgpd') . "</th>";
          $header_end .= "<th>" . __("Comment") . "</th>";
          $header_end .= "</tr>";
 
@@ -179,7 +179,7 @@ class PluginGdprropaRecord_DataSubjectsCategory extends CommonDBRelation {
             if ($_SESSION['glpiis_ids_visible'] || empty($data['name'])) {
                $link = sprintf(__("%1\$s (%2\$s)"), $link, $data['id']);
             }
-            $name = "<a href=\"" . PluginGdprropaDataSubjectsCategory::getFormURLWithID($data['id']) . "\">" . $link . "</a>";
+            $name = "<a href=\"" . PluginRgpdDataSubjectsCategory::getFormURLWithID($data['id']) . "\">" . $link . "</a>";
 
             echo "<td class='left" . (isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'");
             echo ">" . $name . "</td>";
@@ -224,12 +224,12 @@ class PluginGdprropaRecord_DataSubjectsCategory extends CommonDBRelation {
 
       $tab[] = [
          'id' => 'datasubjectscategory',
-         'name' => PluginGdprropaDataSubjectsCategory::getTypeName(0)
+         'name' => PluginRgpdDataSubjectsCategory::getTypeName(0)
       ];
 
       $tab[] = [
          'id' => '41',
-         'table' => PluginGdprropaDataSubjectsCategory::getTable(),
+         'table' => PluginRgpdDataSubjectsCategory::getTable(),
          'field' => 'name',
          'name' => __("Name"),
          'forcegroupby' => true,
