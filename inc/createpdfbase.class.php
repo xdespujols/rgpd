@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -45,10 +45,10 @@ if (!defined('GLPI_ROOT')) {
 }
 
 if (!defined('K_PATH_IMAGES')) {
-   define('K_PATH_IMAGES', GLPI_ROOT . '/plugins/gdprropa/images/');
+   define('K_PATH_IMAGES', GLPI_ROOT . '/plugins/rgpd/images/');
 }
 
-class PluginGdprropaCreatePDFBase extends CommonGLPI {
+class PluginRgpdCreatePDFBase extends CommonGLPI {
 
    protected $pdf;
 
@@ -57,7 +57,7 @@ class PluginGdprropaCreatePDFBase extends CommonGLPI {
 
    public static function getTypeName($nb = 0) {
 
-      return __("Create PDF", 'gdprropa');
+      return __("Create PDF", 'rgpd');
    }
 
    public function showPDF() {
@@ -233,7 +233,7 @@ class PluginGdprropaCreatePDFBase extends CommonGLPI {
 
    function preparePrintOptions($print_options = []) {
 
-      $this->system_config = PluginGdprropaConfig::getConfig();
+      $this->system_config = PluginRgpdConfig::getConfig();
       $this->print_options = $print_options;
 
    }
