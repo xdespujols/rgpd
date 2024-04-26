@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -45,12 +45,12 @@ include("../../../inc/includes.php");
 Session::checkLoginUser();
 
 if (isset($_POST['add'])
-   && (isset($_POST['plugin_gdprropa_records_id']) && ($_POST['plugin_gdprropa_datasubjectscategories_id']))) {
+   && (isset($_POST['plugin_rgpd_records_id']) && ($_POST['plugin_rgpd_datasubjectscategories_id']))) {
 
-   $record = new PluginGdprropaRecord();
-   $record->check($_POST[PluginGdprropaRecord::getForeignKeyField()], UPDATE);
+   $record = new PluginRgpdRecord();
+   $record->check($_POST[PluginRgpdRecord::getForeignKeyField()], UPDATE);
 
-   $item = new PluginGdprropaRecord_DataSubjectsCategory();
+   $item = new PluginRgpdRecord_DataSubjectsCategory();
    $item->add($_POST);
 
 }
