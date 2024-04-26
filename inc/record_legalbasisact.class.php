@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,16 +44,16 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaRecord_LegalBasisAct extends CommonDBRelation {
+class PluginRgpdRecord_LegalBasisAct extends CommonDBRelation {
 
-   static public $itemtype_1 = 'PluginGdprropaRecord';
-   static public $items_id_1 = 'plugin_gdprropa_records_id';
-   static public $itemtype_2 = 'PluginGdprropaLegalBasisAct';
-   static public $items_id_2 = 'plugin_gdprropa_legalbasisacts_id';
+   static public $itemtype_1 = 'PluginRgpdRecord';
+   static public $items_id_1 = 'plugin_rgpd_records_id';
+   static public $itemtype_2 = 'PluginRgpdLegalBasisAct';
+   static public $items_id_2 = 'plugin_rgpd_legalbasisacts_id';
 
    static function getTypeName($nb = 0) {
 
-      return _n("Legal basis", "Legal bases", $nb, 'gdprropa');
+      return _n("Legal basis", "Legal bases", $nb, 'rgpd');
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -63,14 +63,14 @@ class PluginGdprropaRecord_LegalBasisAct extends CommonDBRelation {
       }
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
 
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                $nb = self::countForItem($item);
             }
 
-            return self::createTabEntry(PluginGdprropaRecord_LegalBasisAct::getTypeName($nb), $nb);
+            return self::createTabEntry(PluginRgpdRecord_LegalBasisAct::getTypeName($nb), $nb);
       }
 
       return '';
@@ -79,7 +79,7 @@ class PluginGdprropaRecord_LegalBasisAct extends CommonDBRelation {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
             self::showForRecord($item, $withtemplate);
             break;
       }
@@ -87,14 +87,14 @@ class PluginGdprropaRecord_LegalBasisAct extends CommonDBRelation {
       return true;
    }
 
-   static function showForRecord(PluginGdprropaRecord $record, $withtemplate = 0) {
+   static function showForRecord(PluginRgpdRecord $record, $withtemplate = 0) {
 
       $id = $record->fields['id'];
       if (!$record->can($id, READ)) {
          return false;
       }
 
-      $canedit = PluginGdprropaRecord::canUpdate();
+      $canedit = PluginRgpdRecord::canUpdate();
       $rand = mt_rand(1, mt_getrandmax());
 
       $iterator = self::getListForItem($record);
@@ -111,15 +111,15 @@ class PluginGdprropaRecord_LegalBasisAct extends CommonDBRelation {
          echo "<div class='firstbloc'>";
          echo "<form name='ticketitem_form$rand' id='ticketitem_form$rand' method='post'
             action='" . Toolbox::getItemTypeFormURL(__class__) . "'>";
-         echo "<input type='hidden' name='plugin_gdprropa_records_id' value='$id' />";
+         echo "<input type='hidden' name='plugin_rgpd_records_id' value='$id' />";
 
          echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th>" . __("Add Legal Basis", 'gdprropa') . "</th></tr>";
+         echo "<tr class='tab_bg_2'><th>" . __("Add Legal Basis", 'rgpd') . "</th></tr>";
          echo "<tr class='tab_bg_1'><td width='80%' class='center'>";
 
-         PluginGdprropaLegalBasisAct::dropdown([
-            'addicon'  => PluginGdprropaLegalBasisAct::canCreate(),
-            'name' => 'plugin_gdprropa_legalbasisacts_id',
+         PluginRgpdLegalBasisAct::dropdown([
+            'addicon'  => PluginRgpdLegalBasisAct::canCreate(),
+            'name' => 'plugin_rgpd_legalbasisacts_id',
             'entity' => $record->fields['entities_id'],
             'entity_sons' => false,
             'used' => $used,
@@ -157,8 +157,8 @@ class PluginGdprropaRecord_LegalBasisAct extends CommonDBRelation {
          }
 
          $header_end .= "<th>" . __("Name") . "</th>";
-         $header_end .= "<th>" . __("Type", 'gdprropa') . "</th>";
-         $header_end .= "<th>" . __("Introduced in", 'gdprropa') . "</th>";
+         $header_end .= "<th>" . __("Type", 'rgpd') . "</th>";
+         $header_end .= "<th>" . __("Introduced in", 'rgpd') . "</th>";
          $header_end .= "<th>" . __("Comment") . "</th>";
          $header_end .= "</tr>";
 
@@ -178,12 +178,12 @@ class PluginGdprropaRecord_LegalBasisAct extends CommonDBRelation {
             if ($_SESSION['glpiis_ids_visible'] || empty($data['name'])) {
                $link = sprintf(__("%1\$s (%2\$s)"), $link, $data['id']);
             }
-            $name = "<a href=\"" . PluginGdprropaLegalBasisAct::getFormURLWithID($data['id']) . "\">" . $link . "</a>";
+            $name = "<a href=\"" . PluginRgpdLegalBasisAct::getFormURLWithID($data['id']) . "\">" . $link . "</a>";
 
             echo "<td class='left" . (isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'");
             echo ">" . $name . "</td>";
 
-            $types = PluginGdprropaLegalBasisAct::getAllTypesArray();
+            $types = PluginRgpdLegalBasisAct::getAllTypesArray();
 
             echo "<td class='center'>" . $types[$data['type']] . " </td>";
 
@@ -227,12 +227,12 @@ class PluginGdprropaRecord_LegalBasisAct extends CommonDBRelation {
 
       $tab[] = [
          'id' => 'legalbasisact',
-         'name' => PluginGdprropaLegalBasisAct::getTypeName(0)
+         'name' => PluginRgpdLegalBasisAct::getTypeName(0)
       ];
 
       $tab[] = [
          'id' => '31',
-         'table' => PluginGdprropaLegalBasisAct::getTable(),
+         'table' => PluginRgpdLegalBasisAct::getTable(),
          'field' => 'name',
          'name' => __("Name"),
          'forcegroupby' => true,
