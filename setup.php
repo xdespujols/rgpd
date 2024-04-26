@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,75 +30,75 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
 
-define('PLUGIN_GDPRROPA_VERSION', '1.0');
-define('PLUGIN_GDPRROPA_ROOT', __DIR__);
+define('PLUGIN_RGPD_VERSION', '1.0');
+define('PLUGIN_RGPD_ROOT', __DIR__);
 
-function plugin_init_gdprropa() {
+function plugin_init_rgpd() {
 
    global $PLUGIN_HOOKS;
 
-   $PLUGIN_HOOKS['csrf_compliant']['gdprropa'] = true;
+   $PLUGIN_HOOKS['csrf_compliant']['rgpd'] = true;
 
    if (Session::getLoginUserID()) {
 
-      Plugin::registerClass('PluginGdprropaProfile', ['addtabon' => ['Profile']]);
-      Plugin::registerClass('PluginGdprropaRecord');
+      Plugin::registerClass('PluginRgpdProfile', ['addtabon' => ['Profile']]);
+      Plugin::registerClass('PluginRgpdRecord');
 
-      $PLUGIN_HOOKS['change_profile']['gdprropa'] = ['PluginGdprropaProfile', 'initProfile'];
+      $PLUGIN_HOOKS['change_profile']['rgpd'] = ['PluginRgpdProfile', 'initProfile'];
 
       $plugin = new Plugin();
       if (!$plugin->isActivated('environment')
-         && Session::haveRight('plugin_gdprropa_record', READ)) {
-         $PLUGIN_HOOKS['menu_toadd']['gdprropa'] = ['management' => 'PluginGdprropaMenu'];
+         && Session::haveRight('plugin_rgpd_record', READ)) {
+         $PLUGIN_HOOKS['menu_toadd']['rgpd'] = ['management' => 'PluginRgpdMenu'];
       }
 
-      if (Session::haveRight('plugin_gdprropa_record', UPDATE)
+      if (Session::haveRight('plugin_rgpd_record', UPDATE)
          || Session::haveRight('config', UPDATE)) {
-         $PLUGIN_HOOKS['config_page']['gdprropa'] = 'front/config.form.php';
+         $PLUGIN_HOOKS['config_page']['rgpd'] = 'front/config.form.php';
       }
 
-      Plugin::registerClass('PluginGdprropaControllerInfo', ['addtabon' => ['Entity']]);
+      Plugin::registerClass('PluginRgpdControllerInfo', ['addtabon' => ['Entity']]);
 
-      $PLUGIN_HOOKS['post_init']['gdprropa'] = 'plugin_gdprropa_postinit';
+      $PLUGIN_HOOKS['post_init']['rgpd'] = 'plugin_rgpd_postinit';
    }
 
 }
 
-function plugin_version_gdprropa() {
+function plugin_version_rgpd() {
 
    return [
-      'name' => __("GDPR Records of Processing Activities", 'gdprropa'),
-      'version' => PLUGIN_GDPRROPA_VERSION,
-      'author' => "<a href='https://github.com/yild/'>Yild</a>",
+      'name' => __("GDPR Records of Processing Activities", 'rgpd'),
+      'version' => PLUGIN_RGPD_VERSION,
+      'author' => "<a href='https://github.com/xdespujols/'>XDespujols</a>",
       'license' => 'GPLv3+',
-      'homepage' => 'https://github.com/yild/gdprropa',
+      'homepage' => 'https://github.com/xdespujols/rgpd',
       'minGlpiVersion' => '9.4',
       'requirements'   => [
          'glpi' => [
-            'min' => '9.4',
+            'min' => '10.0',
             'dev' => false
          ]
       ],
    ];
 }
 
-function plugin_gdprropa_check_prerequisites() {
+function plugin_rgpd_check_prerequisites() {
 
-   if (version_compare(GLPI_VERSION, '9.4', 'lt')) {
+   if (version_compare(GLPI_VERSION, '10.0.5', 'lt')) {
       if (method_exists('Plugin', 'messageIncompatible')) {
-         echo Plugin::messageIncompatible('core', '9.4');
+         echo Plugin::messageIncompatible('core', '10.0');
       } else {
-         echo "This plugin requires GLPI >= 9.4";
+         echo "This plugin requires GLPI >= 10.0.5";
       }
       return false;
    }
@@ -106,7 +106,7 @@ function plugin_gdprropa_check_prerequisites() {
    return true;
 }
 
-function plugin_gdprropa_check_config($verbose = false) {
+function plugin_rgpd_check_config($verbose = false) {
 
    if (true) {
       return true;
