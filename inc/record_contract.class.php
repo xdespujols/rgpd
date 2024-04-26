@@ -428,7 +428,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
       $group  = '';
       $prev   = -1;
       $values = [];
-      while ($data = $DB->fetch_assoc($result)) {
+      while ($data = $DB->fetchAssoc($result)) {
 
          if ($p['nochecklimit']
              || ($data['max_links_allowed'] == 0)
@@ -558,7 +558,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
                 `glpi_contracts`.`begin_date` IS NULL OR (`glpi_contracts`.`duration` = 0 AND
                 DATEDIFF(`glpi_contracts`.`begin_date`, CURDATE() ) < '0' ) OR
                 `glpi_contracts`.`renewal` = 1";
-       }
+      }
       $iterator = $DB->request($query);
 
       return $iterator;
