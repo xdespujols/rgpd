@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,9 +44,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaLegalBasisAct extends CommonDropdown {
+class PluginRgpdLegalBasisAct extends CommonDropdown {
 
-   static $rightname = 'plugin_gdprropa_legalbasisact';
+   static $rightname = 'plugin_rgpd_legalbasisact';
 
    public $dohistory = true;
 
@@ -59,7 +59,7 @@ class PluginGdprropaLegalBasisAct extends CommonDropdown {
 
    static function getTypeName($nb = 0) {
 
-       return _n("Legal basis", "Legal bases", $nb, 'gdprropa');
+       return _n("Legal basis", "Legal bases", $nb, 'rgpd');
    }
 
    function getAdditionalFields() {
@@ -127,12 +127,12 @@ class PluginGdprropaLegalBasisAct extends CommonDropdown {
    static function getAllTypesArray() {
 
       return [
-         self::LEGALBASISACT_BLANK => __("Undefined", 'gdprropa'),
-         self::LEGALBASISACT_GDPR => __("GDPR Article", 'gdprropa'),
-         self::LEGALBASISACT_NATIONAL => __("Local law regulation", 'gdprropa'),
-         self::LEGALBASISACT_INTERNATIONAL => __("International regulation", 'gdprropa'),
-         self::LEGALBASISACT_INTERNAL => __("Controller internal regulation", 'gdprropa'),
-         self::LEGALBASISACT_OTHER => __("Other regulation", 'gdprropa'),
+         self::LEGALBASISACT_BLANK => __("Undefined", 'rgpd'),
+         self::LEGALBASISACT_GDPR => __("GDPR Article", 'rgpd'),
+         self::LEGALBASISACT_NATIONAL => __("Local law regulation", 'rgpd'),
+         self::LEGALBASISACT_INTERNATIONAL => __("International regulation", 'rgpd'),
+         self::LEGALBASISACT_INTERNAL => __("Controller internal regulation", 'rgpd'),
+         self::LEGALBASISACT_OTHER => __("Other regulation", 'rgpd'),
       ];
    }
 
@@ -152,8 +152,8 @@ class PluginGdprropaLegalBasisAct extends CommonDropdown {
 
    function cleanDBonPurge() {
 
-      $rel = new PluginGdprropaRecord_LegalBasisAct();
-      $rel->deleteByCriteria(['plugin_gdprropa_legalbasisacts_id' => $this->fields['id']]);
+      $rel = new PluginRgpdRecord_LegalBasisAct();
+      $rel->deleteByCriteria(['plugin_rgpd_legalbasisacts_id' => $this->fields['id']]);
 
    }
 
@@ -189,7 +189,7 @@ class PluginGdprropaLegalBasisAct extends CommonDropdown {
          'id'                 => '3',
          'table'              => $this->getTable(),
          'field'              => 'type',
-         'name'               => __("Type", 'gdprropa'),
+         'name'               => __("Type", 'rgpd'),
          'searchtype'         => 'equals',
          'massiveaction'      => true,
          'datatype'           => 'specific'
