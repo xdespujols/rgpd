@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,7 +44,7 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaRecord_Retention extends CommonDBTM {
+class PluginRgpdRecord_Retention extends CommonDBTM {
 
    public $dohistory = true;
 
@@ -55,7 +55,7 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
 
    static function getTypeName($nb = 0) {
 
-      return __("Data Retention", 'gdprropa');
+      return __("Data Retention", 'rgpd');
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -65,9 +65,9 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
       }
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
 
-            return self::createTabEntry(PluginGdprropaRecord_Retention::getTypeName(0), 0);
+            return self::createTabEntry(PluginRgpdRecord_Retention::getTypeName(0), 0);
       }
 
       return '';
@@ -76,7 +76,7 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
 
             $retention = new self();
             $retention->showForRecord($item, $withtemplate = 0);
@@ -88,25 +88,25 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
 
    static function canView() {
 
-      return PluginGdprropaRecord::canView();
+      return PluginRgpdRecord::canView();
    }
 
    static function canCreate() {
 
-      return PluginGdprropaRecord::canCreate();
+      return PluginRgpdRecord::canCreate();
    }
 
    static function canUpdate() {
 
-      return PluginGdprropaRecord::canUpdate();
+      return PluginRgpdRecord::canUpdate();
    }
 
-   public function showForRecord(PluginGdprropaRecord $record, $withtemplate = 0) {
+   public function showForRecord(PluginRgpdRecord $record, $withtemplate = 0) {
 
       global $CFG_GLPI;
 
       if ($record->fields['id']) {
-         $this->getFromDBByCrit(['plugin_gdprropa_records_id' => $record->fields['id']]);
+         $this->getFromDBByCrit(['plugin_rgpd_records_id' => $record->fields['id']]);
       }
 
       if (!$record->can($record->fields['id'], READ)) {
@@ -117,21 +117,21 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
          $this->fields['id'] = -1;
       }
 
-      $canedit = PluginGdprropaRecord::canUpdate() || ($this->fields['id'] <= 0 && PluginGdprropaRecord::canCreate());
+      $canedit = PluginRgpdRecord::canUpdate() || ($this->fields['id'] <= 0 && PluginRgpdRecord::canCreate());
       $rand = mt_rand(1, mt_getrandmax());
 
       $options['canedit'] = $canedit;
-      $options['formtitle'] = __("Manage data retention", 'gdprropa');
+      $options['formtitle'] = __("Manage data retention", 'rgpd');
 
       $this->initForm($this->fields['id'], $options);
       $this->showFormHeader($options);
 
       echo "<tr class='tab_bg_3'><td colspan='4'><center><strong>";
-      echo __("GDPR Article 30 1f", 'gdprropa');
+      echo __("GDPR Article 30 1f", 'rgpd');
       echo "</strong></center></td></tr>";
 
       echo "<tr class='tab_bg_2'><td width='16%'>";
-      echo __("Retention regulated by", 'gdprropa');
+      echo __("Retention regulated by", 'rgpd');
       echo "</td><td width='84%'>";
       $rand = self::dropdownTypes('type', array_key_exists('type', $this->fields) ? $this->fields['type'] : null, true);
       echo "</td></tr>";
@@ -159,7 +159,7 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
       Ajax::updateItemOnSelectEvent(
          "dropdown_type$rand",
          'retention_type_div',
-         $CFG_GLPI['root_doc'] . '/plugins/gdprropa/ajax/record_retention_retention_type_dropdown.php',
+         $CFG_GLPI['root_doc'] . '/plugins/rgpd/ajax/record_retention_retention_type_dropdown.php',
          $params
       );
 
@@ -167,15 +167,15 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
       if ($record->fields['id'] < 1 || array_key_exists('type', $this->fields)) {
          switch ($this->fields['type']) {
 
-            case PluginGdprropaRecord_Retention::RETENTION_TYPE_NONE:
+            case PluginRgpdRecord_Retention::RETENTION_TYPE_NONE:
                break;
-            case PluginGdprropaRecord_Retention::RETENTION_TYPE_CONTRACT:
+            case PluginRgpdRecord_Retention::RETENTION_TYPE_CONTRACT:
                self::showContractInputs($this->fields);
                break;
-            case PluginGdprropaRecord_Retention::RETENTION_TYPE_LEGALBASISACT:
+            case PluginRgpdRecord_Retention::RETENTION_TYPE_LEGALBASISACT:
                self::showLegalBasesInputs($this->fields);
                break;
-            case PluginGdprropaRecord_Retention::RETENTION_TYPE_OTHER:
+            case PluginRgpdRecord_Retention::RETENTION_TYPE_OTHER:
                self::showOtherInputs($this->fields);
                break;
          }
@@ -184,7 +184,7 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
 
       echo "</td></tr>";
 
-      echo "<tr><td></td><td>" .  __ ("Additional information", 'gdprropa') . "<br>";
+      echo "<tr><td></td><td>" .  __ ("Additional information", 'rgpd') . "<br>";
       echo "";
       $additional_info = '';
       if (array_key_exists('additional_info', $this->fields)) {
@@ -195,7 +195,7 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
 
       echo "<tr class='tab_bg_1'>";
       echo "<td class='center' colspan='4'>";
-      echo "<input type='hidden' name='plugin_gdprropa_records_id' value='" . $record->fields['id'] . "' />";
+      echo "<input type='hidden' name='plugin_rgpd_records_id' value='" . $record->fields['id'] . "' />";
       echo "<input type='hidden' name='is_record_recursive' value='" . $record->fields['is_recursive'] . "' />";
       echo "</td></tr>";
 
@@ -216,27 +216,27 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
 
       echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>";
       echo "<tr>";
-      echo "<td width='24%'>" . __("Contract name", 'gdprropa') . "</td>";
+      echo "<td width='24%'>" . __("Contract name", 'rgpd') . "</td>";
       echo "<td width='76%'>";
 
       $contracttypes = [];
 
-      if (PluginGdprropaConfig::getConfig('system', 'limit_retention_contracttypes')) {
-         $contracttypes = PluginGdprropaControllerInfo::getContractTypes($data['entities_id']);
+      if (PluginRgpdConfig::getConfig('system', 'limit_retention_contracttypes')) {
+         $contracttypes = PluginRgpdControllerInfo::getContractTypes($data['entities_id']);
 
-         $info = PluginGdprropaRecord_Contract::showContractTypesNotSetInfo($contracttypes, $data['entities_id']);
+         $info = PluginRgpdRecord_Contract::showContractTypesNotSetInfo($contracttypes, $data['entities_id']);
          if (!empty($info)) {
             echo $info;
          }
       }
 
-      PluginGdprropaRecord_Contract::getContractsDropdown([
+      PluginRgpdRecord_Contract::getContractsDropdown([
          'name' => 'contracts_id',
          // TODO tutaj wyswietlal sie blad o niemoznosci podania listy dla tabeli arrayow i sona - zmieniono dodano negacje '!' wartosci 'entity_sons
          //'entity' => $data['is_record_recursive'] ? getSonsOf('glpi_entities', $data['entities_id']) : $data['entities_id'],
          'entity' => $data['is_record_recursive'] ? getSonsOf('glpi_entities', $data['entities_id']) : $data['entities_id'],
          'entity_sons' => !$data['is_record_recursive'],
-         'expired' => PluginGdprropaConfig::getConfig('system', 'allow_select_expired_contracts'),
+         'expired' => PluginRgpdConfig::getConfig('system', 'allow_select_expired_contracts'),
          'nochecklimit' => true,
          'width'            => '100%',
          'value' => $value,
@@ -246,7 +246,7 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
 
       echo "</td></tr>";
       echo "<tr>";
-      echo "<td>" . __("Until contract is valid", 'gdprropa') . "</td>";
+      echo "<td>" . __("Until contract is valid", 'rgpd') . "</td>";
       echo "<td>";
 
       $value = null;
@@ -267,7 +267,7 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
       Ajax::updateItemOnEvent(
          "dropdown_contract_until_is_valid$rand",
          'retention_contract_after',
-         $CFG_GLPI['root_doc'] . '/plugins/gdprropa/ajax/record_retention_contract_until_is_valid.php',
+         $CFG_GLPI['root_doc'] . '/plugins/rgpd/ajax/record_retention_contract_until_is_valid.php',
          $params
       );
 
@@ -285,7 +285,7 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
 
       echo "<table width='100%' border='0' cellpadding='0' cellspacing='0'>";
       echo "<tr>";
-      echo "<td>" . __("Period", 'gdprropa') . "</td>";
+      echo "<td>" . __("Period", 'rgpd') . "</td>";
 
       echo "<td>";
 
@@ -304,7 +304,7 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>" . __("After contract is terminated", 'gdprropa') . "</td>";
+      echo "<td>" . __("After contract is terminated", 'rgpd') . "</td>";
       echo "<td>";
 
       $value = null;
@@ -320,13 +320,13 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
    static function showLegalBasesInputs($data = []) {
 
       $value = null;
-      if (array_key_exists('plugin_gdprropa_legalbasisacts_id', $data)) {
-         $value = $data['plugin_gdprropa_legalbasisacts_id'];
+      if (array_key_exists('plugin_rgpd_legalbasisacts_id', $data)) {
+         $value = $data['plugin_rgpd_legalbasisacts_id'];
       }
 
-      echo __("Legal bases", 'gdprropa') . "&nbsp;&nbsp;&nbsp;";
-      PluginGdprropaLegalBasisAct::dropdown([
-         'name' => 'plugin_gdprropa_legalbasisacts_id',
+      echo __("Legal bases", 'rgpd') . "&nbsp;&nbsp;&nbsp;";
+      PluginRgpdLegalBasisAct::dropdown([
+         'name' => 'plugin_rgpd_legalbasisacts_id',
          'value' => $value,
          'entity' => $data['is_record_recursive'] ? getSonsOf('glpi_entities', $data['entities_id']) : $data['entities_id'],
          'entity_sons' => $data['is_record_recursive'],
@@ -348,20 +348,20 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
 
       return [
          '' => Dropdown::EMPTY_VALUE,
-         self::RETENTION_TYPE_NONE => __("Not required", 'gdprropa'),
-         self::RETENTION_TYPE_CONTRACT => __("Contractual term", 'gdprropa'),
-         self::RETENTION_TYPE_LEGALBASISACT => __("Legal basis", 'gdprropa'),
-         self::RETENTION_TYPE_OTHER => __("Other regulations", 'gdprropa'),
+         self::RETENTION_TYPE_NONE => __("Not required", 'rgpd'),
+         self::RETENTION_TYPE_CONTRACT => __("Contractual term", 'rgpd'),
+         self::RETENTION_TYPE_LEGALBASISACT => __("Legal basis", 'rgpd'),
+         self::RETENTION_TYPE_OTHER => __("Other regulations", 'rgpd'),
       ];
    }
 
    static function getRetentionPeriodScales($index = null, $nb = 1) {
 
       $options = [
-         'y' => _n("Year", "Years", $nb, 'gdprropa'),
-         'm' => _n("Month", "Months", $nb, 'gdprropa'),
-         'd' => _n("Day", "Days", $nb, 'gdprropa'),
-         'h' => _n("Hour", "Hours", $nb, 'gdprropa')
+         'y' => _n("Year", "Years", $nb, 'rgpd'),
+         'm' => _n("Month", "Months", $nb, 'rgpd'),
+         'd' => _n("Day", "Days", $nb, 'rgpd'),
+         'h' => _n("Hour", "Hours", $nb, 'rgpd')
       ];
 
       if ($index && array_key_exists($index, $options)) {
@@ -398,9 +398,9 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
 
       switch ($input['type']) {
 
-         case PluginGdprropaRecord_Retention::RETENTION_TYPE_NONE:
+         case PluginRgpdRecord_Retention::RETENTION_TYPE_NONE:
 
-            $input['plugin_gdprropa_legalbasisacts_id'] = 0;
+            $input['plugin_rgpd_legalbasisacts_id'] = 0;
             $input['contracts_id'] = 0;
             $input['contract_until_is_valid'] = 0;
             $input['contract_after_is_terminated'] = 0;
@@ -408,16 +408,16 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
             $input['contract_retention_scale'] = 'y';
             break;
 
-         case PluginGdprropaRecord_Retention::RETENTION_TYPE_CONTRACT:
+         case PluginRgpdRecord_Retention::RETENTION_TYPE_CONTRACT:
 
-            $input['plugin_gdprropa_legalbasisacts_id'] = 0;
+            $input['plugin_rgpd_legalbasisacts_id'] = 0;
             if ($input['contract_until_is_valid']) {
                $input['contract_retention_value'] = 0;
                $input['contract_retention_scale'] = 'y';
             }
             break;
 
-         case PluginGdprropaRecord_Retention::RETENTION_TYPE_LEGALBASISACT:
+         case PluginRgpdRecord_Retention::RETENTION_TYPE_LEGALBASISACT:
 
             $input['contracts_id'] = 0;
             $input['contract_until_is_valid'] = 0;
@@ -426,9 +426,9 @@ class PluginGdprropaRecord_Retention extends CommonDBTM {
             $input['contract_retention_scale'] = 'y';
             break;
 
-         case PluginGdprropaRecord_Retention::RETENTION_TYPE_OTHER:
+         case PluginRgpdRecord_Retention::RETENTION_TYPE_OTHER:
 
-            $input['plugin_gdprropa_legalbasisacts_id'] = 0;
+            $input['plugin_rgpd_legalbasisacts_id'] = 0;
             $input['contracts_id'] = 0;
             $input['contract_until_is_valid'] = 0;
             $input['contract_after_is_terminated'] = 0;
