@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,25 +30,25 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
 
 include("../../../inc/includes.php");
 
-Plugin::load('gdprropa', true);
+Plugin::load('rgpd', true);
 
 Session::checkCentralAccess();
 
 if (isset($_GET['createpdf'])) {
 
-   $print_options = PluginGdprropaCreatePDF::preparePrintOptionsFromForm($_GET);
+   $print_options = PluginRgpdCreatePDF::preparePrintOptionsFromForm($_GET);
 
    if (isset($_GET['action'])) {
 
@@ -57,13 +57,13 @@ if (isset($_GET['createpdf'])) {
          if (isset($_GET['report_type'])) {
             $type = $_GET['report_type'];
          } else {
-            $type = PluginGdprropaCreatePDF::REPORT_ALL;
+            $type = PluginRgpdCreatePDF::REPORT_ALL;
          }
 
-         Html::header(PluginGdprropaRecord::getTypeName(0), '', "management", "plugingdprropamenu");
-         PluginGdprropaCreatePDF::showPrepareForm($type);
+         Html::header(PluginRgpdRecord::getTypeName(0), '', "management", "pluginrgpdamenu");
+         PluginRgpdCreatePDF::showPrepareForm($type);
       } else if ($_GET['action'] == 'print') {
-         $pdfoutput = new PluginGdprropaCreatePDF();
+         $pdfoutput = new PluginRgpdCreatePDF();
          $pdfoutput->generateReport($_GET, $print_options);
          $pdfoutput->showPDF();
       }
