@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,22 +30,23 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
+
 // TODO record search option by contract - items doesnt show suppliers names (getSpecificValueToSelect field doesnt work here
 //       - it should be overriden in 'Contract' class) - or make pull request to original glpi code
 if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaRecord_Contract extends CommonDBRelation {
+class PluginRgpdRecord_Contract extends CommonDBRelation {
 
    public const CONTRACT_ALL = 0;
    public const CONTRACT_JOINTCONTROLLER = 1;
@@ -54,14 +55,14 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
    public const CONTRACT_INTERNAL = 4;
    public const CONTRACT_OTHER = 5;
 
-   static public $itemtype_1 = 'PluginGdprropaRecord';
-   static public $items_id_1 = 'plugin_gdprropa_records_id';
+   static public $itemtype_1 = 'PluginRgpdRecord';
+   static public $items_id_1 = 'plugin_rgpd_records_id';
    static public $itemtype_2 = 'Contract';
    static public $items_id_2 = 'contracts_id';
 
    static function getTypeName($nb = 0) {
 
-      return _n("Contract", "Contracts", $nb, 'gdprropa');
+      return _n("Contract", "Contracts", $nb, 'rgpd');
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -71,14 +72,14 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
       }
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
 
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                $nb = self::countForItem($item);
             }
 
-            return self::createTabEntry(PluginGdprropaRecord_Contract::getTypeName($nb), $nb);
+            return self::createTabEntry(PluginRgpdRecord_Contract::getTypeName($nb), $nb);
       }
 
       return '';
@@ -87,7 +88,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
             self::showForRecord($item, $withtemplate);
             break;
       }
@@ -100,24 +101,24 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
       $output = '';
 
       if (($contracttypes['contracttypes_id_jointcontroller'] < 1)) {
-         $output .= '<br>' . __("Joint controller contract type not set.", 'gdprropa') . '<br>';
+         $output .= '<br>' . __("Joint controller contract type not set.", 'rgpd') . '<br>';
       }
       if ($contracttypes['contracttypes_id_processor'] < 1) {
-         $output .= '<br>' . __("Processor contract type not set.", 'gdprropa') . '<br>';
+         $output .= '<br>' . __("Processor contract type not set.", 'rgpd') . '<br>';
       }
       if ($contracttypes['contracttypes_id_thirdparty'] < 1) {
-         $output .= '<br>' . __("Third country/internalional organization contract type not set.", 'gdprropa') . '<br>';
+         $output .= '<br>' . __("Third country/internalional organization contract type not set.", 'rgpd') . '<br>';
       }
       if ($contracttypes['contracttypes_id_internal'] < 1) {
-         $output .= '<br>' . __("Internal contract type not set.", 'gdprropa') . '<br>';
+         $output .= '<br>' . __("Internal contract type not set.", 'rgpd') . '<br>';
       }
       if ($contracttypes['contracttypes_id_other'] < 1) {
-         $output .= '<br>' . __("Other contract type not set.", 'gdprropa') . '<br>';
+         $output .= '<br>' . __("Other contract type not set.", 'rgpd') . '<br>';
       }
 
       if (!empty($output)) {
          $link = "<a href='" . Entity::getFormURLWithID($entity_id) . "'>Entity</a>";
-         $str = sprintf(__("Go to %s tab at %s and assign contract type.", 'gdprropa'), PluginGdprropaControllerInfo::getTypeName(0), $link);
+         $str = sprintf(__("Go to %s tab at %s and assign contract type.", 'rgpd'), PluginRgpdControllerInfo::getTypeName(0), $link);
 
          $output .= '<p>' . $str . '</p><br>';
 
@@ -126,7 +127,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
       return $output;
    }
 
-   static function showForRecord(PluginGdprropaRecord $record, $withtemplate = 0) {
+   static function showForRecord(PluginRgpdRecord $record, $withtemplate = 0) {
 
       global $DB;
 
@@ -135,7 +136,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
          return false;
       }
 
-      $canedit = PluginGdprropaRecord::canUpdate();
+      $canedit = PluginRgpdRecord::canUpdate();
       $rand = mt_rand(1, mt_getrandmax());
 
       $iterator = self::getListForItem($record);
@@ -152,28 +153,28 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
          echo "<div class='firstbloc'>";
          echo "<form name='ticketitem_form$rand' id='ticketitem_form$rand' method='post'
             action='" . Toolbox::getItemTypeFormURL(__class__) . "'>";
-         echo "<input type='hidden' name='plugin_gdprropa_records_id' value='$id' />";
+         echo "<input type='hidden' name='plugin_rgpd_records_id' value='$id' />";
 
          echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th>" . __("Add Joint Controller/Processor", 'gdprropa') . "</th></tr>";
+         echo "<tr class='tab_bg_2'><th>" . __("Add Joint Controller/Processor", 'rgpd') . "</th></tr>";
          echo "<tr class='tab_bg_3'><td><center><strong>";
-         echo __("GDPR Article 30 1d, 1e", 'gdprropa');
+         echo __("GDPR Article 30 1d, 1e", 'rgpd');
          echo "</strong></center></td></tr>";
          echo "<tr class='tab_bg_1'><td width='80%' class='center'>";
 
-         $contractypes = PluginGdprropaControllerInfo::getContractTypes($record->fields['entities_id']);
+         $contractypes = PluginRgpdControllerInfo::getContractTypes($record->fields['entities_id']);
 
-         $info = PluginGdprropaRecord_Contract::showContractTypesNotSetInfo($contractypes, $record->fields['entities_id']);
+         $info = PluginRgpdRecord_Contract::showContractTypesNotSetInfo($contractypes, $record->fields['entities_id']);
          if (!empty($info)) {
             echo $info;
          }
 
-         PluginGdprropaRecord_Contract::getContractsDropdown([
+         PluginRgpdRecord_Contract::getContractsDropdown([
             'name' => 'contracts_id',
             'entity' => $record->fields['is_recursive'] ? getSonsOf('glpi_entities', $record->fields['entities_id']) : $record->fields['entities_id'],
             'entity_sons' => !$record->fields['is_recursive'],
             'used' => $used,
-            'expired' => PluginGdprropaConfig::getConfig('system', 'allow_select_expired_contracts'),
+            'expired' => PluginRgpdConfig::getConfig('system', 'allow_select_expired_contracts'),
             'nochecklimit' => true,
             'contracttypes' => $contractypes,
          ]);
@@ -215,7 +216,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
          $header_end .= "<th>" . __("Type") . "</th>";
          $header_end .= "<th>" . __("Number") . "</th>";
          $header_end .= "<th>" . __("Begin date") . "</th>";
-         $header_end .= "<th>" . __("Introduced in", 'gdprropa') . "</th>";
+         $header_end .= "<th>" . __("Introduced in", 'rgpd') . "</th>";
          $header_end .= "<th>" . __("Comment") . "</th>";
          $header_end .= "<th>" . __("Expiry") . "</th>";
          $header_end .= "</tr>";
@@ -306,7 +307,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
 
    static function cleanForItem(CommonDBTM $item) {
 
-      $rel = new PluginGdprropaRecord_Contract();
+      $rel = new PluginRgpdRecord_Contract();
       $rel->deleteByCriteria([
          'itemtype' => $item->getType(),
          'contracts_id' => $item->fields['id']
@@ -331,11 +332,11 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
 
       switch ($type) {
 
-         case self::CONTRACT_JOINTCONTROLLER: return __("Joint controller contract", 'gdprropa');
-         case self::CONTRACT_PROCESSOR: return __("Processor contract", 'gdprropa');
-         case self::CONTRACT_THIRDPARTY: return __("Thirdparty contract", 'gdprropa');
-         case self::CONTRACT_INTERNAL: return __("Internal contract", 'gdprropa');
-         case self::CONTRACT_OTHER: return __("Other contract", 'gdprropa');
+         case self::CONTRACT_JOINTCONTROLLER: return __("Joint controller contract", 'rgpd');
+         case self::CONTRACT_PROCESSOR: return __("Processor contract", 'rgpd');
+         case self::CONTRACT_THIRDPARTY: return __("Thirdparty contract", 'rgpd');
+         case self::CONTRACT_INTERNAL: return __("Internal contract", 'rgpd');
+         case self::CONTRACT_OTHER: return __("Other contract", 'rgpd');
       }
 
       return "???";
@@ -448,7 +449,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
             $tmp = sprintf(__('%1$s - %2$s'), $name, $data['contracts_num']);
             $tmp = sprintf(__('%1$s - %2$s'), $tmp, Html::convDateTime($data['contracts_begin_date']));
 
-            $tmp .= PluginGdprropaRecord_Contract::getSuppliersNames($data['id'], ', ');
+            $tmp .= PluginRgpdRecord_Contract::getSuppliersNames($data['id'], ', ');
             $tmp .= ' - ' . $data['contracttypes_names'];
 
             $values[$group][$data['id']] = $tmp;
@@ -468,7 +469,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
 
       global $DB;
 
-      $ids = PluginGdprropaControllerInfo::getContractTypes($record->getEntityID());
+      $ids = PluginRgpdControllerInfo::getContractTypes($record->getEntityID());
 
       $contract_type = [];
       switch ($type) {
@@ -523,10 +524,10 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
       ];
       $query['FROM'] = ['glpi_contracts'];
       $query['LEFT JOIN'] = [
-            'glpi_plugin_gdprropa_records_contracts' => [
+            'glpi_plugin_rgpd_records_contracts' => [
                'FKEY' => [
                   'glpi_contracts'   => 'id',
-                  'glpi_plugin_gdprropa_records_contracts' => 'contracts_id']
+                  'glpi_plugin_rgpd_records_contracts' => 'contracts_id']
             ],
             'glpi_contracts_suppliers' => [
                'FKEY' => [
@@ -548,7 +549,7 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
             ],
          ];
       $query['WHERE'] = [
-            'glpi_plugin_gdprropa_records_contracts.plugin_gdprropa_records_id' => $record->fields['id'],
+            'glpi_plugin_rgpd_records_contracts.plugin_rgpd_records_id' => $record->fields['id'],
             'glpi_contracttypes.id' => $contract_type,
             'glpi_contracts.is_deleted' => 0,
       ];
@@ -570,25 +571,25 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
 
       $tab[] = [
          'id' => 'jointcontroller',
-         'name' => PluginGdprropaRecord_Contract::getTypeName(0)
+         'name' => PluginRgpdRecord_Contract::getTypeName(0)
       ];
 
       $tab[] = [
          'id' => '151',
          'table' => 'glpi_contracts',
          'field' => 'id',
-         'name' => __("Name (select from list)", 'gdprropa'),
+         'name' => __("Name (select from list)", 'rgpd'),
          'forcegroupby' => true,
          'massiveaction' => false,
          'datatype' => 'dropdown',
          'searchtype' => ['equals', 'notequals'],
          'joinparams' => [
             'beforejoin' => [
-               'table' => 'glpi_plugin_gdprropa_records_contracts',
+               'table' => 'glpi_plugin_rgpd_records_contracts',
                'joinparams' => [
                   'jointype' => 'child',
                   'beforejoin' => [
-                     'table' => 'glpi_plugin_gdprropa_records',
+                     'table' => 'glpi_plugin_rgpd_records',
                      'joinparams' => [
                         'jointype' => 'child',
                       ]
@@ -608,11 +609,11 @@ class PluginGdprropaRecord_Contract extends CommonDBRelation {
          'datatype' => 'string',
          'joinparams' => [
             'beforejoin' => [
-               'table' => 'glpi_plugin_gdprropa_records_contracts',
+               'table' => 'glpi_plugin_rgpd_records_contracts',
                'joinparams' => [
                   'jointype' => 'child',
                   'beforejoin' => [
-                     'table' => 'glpi_plugin_gdprropa_records',
+                     'table' => 'glpi_plugin_rgpd_records',
                      'joinparams' => [
                         'jointype' => 'child',
                       ]
