@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,9 +44,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
+class PluginRgpdPersonalDataCategory extends CommonTreeDropdown {
 
-   static $rightname = 'plugin_gdprropa_personaldatacategory';
+   static $rightname = 'plugin_rgpd_personaldatacategory';
 
    public $dohistory = true;
 
@@ -54,7 +54,7 @@ class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
 
    static function getTypeName($nb = 0) {
 
-      return _n("Personal Data Category", "Personal Data Categories", $nb, 'gdprropa');
+      return _n("Personal Data Category", "Personal Data Categories", $nb, 'rgpd');
    }
 
    public function getAdditionalFields() {
@@ -68,7 +68,7 @@ class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
          ],
          [
             'name' => 'is_special_category',
-            'label' => __("Special category", 'gdprropa'),
+            'label' => __("Special category", 'rgpd'),
             'type' => 'bool',
             'list' => true
          ]
@@ -91,14 +91,14 @@ class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
 
    function post_addItem() {
 
-      if (PluginGdprropaConfig::getConfig('system', 'keep_is_special_category_strict')) {
+      if (PluginRgpdConfig::getConfig('system', 'keep_is_special_category_strict')) {
          self::update_special_category($this);
       }
    }
 
    function post_updateItem($history = 1) {
 
-      if (PluginGdprropaConfig::getConfig('system', 'keep_is_special_category_strict')) {
+      if (PluginRgpdConfig::getConfig('system', 'keep_is_special_category_strict')) {
          self::update_special_category($this);
       }
    }
@@ -124,7 +124,7 @@ class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
          return false;
       }
 
-      $pdc = new PluginGdprropaPersonalDataCategory();
+      $pdc = new PluginRgpdPersonalDataCategory();
       $result = $pdc->find(['is_special_category' => 1, 'id' => $sons]);
 
       return count($result) > 0;
@@ -151,7 +151,7 @@ class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
       } else if ($item->input['is_special_category'] == '0') {
 
          if (self::any_son_is_special_category($item)) {
-            $DB->update($this->getTable(), ['is_special_category' => 1], ['id' => $item->fields['plugin_gdprropa_personaldatacategories_id']]);
+            $DB->update($this->getTable(), ['is_special_category' => 1], ['id' => $item->fields['plugin_rgpd_personaldatacategories_id']]);
             $DB->update($this->getTable(), ['is_special_category' => 1], ['id' => $item->fields['id']]);
          }
       }
@@ -159,8 +159,8 @@ class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
 
    function cleanDBonPurge() {
 
-      $rel = new PluginGdprropaRecord_PersonalDataCategory();
-      $rel->deleteByCriteria(['plugin_gdprropa_personaldatacategories_id' => $this->fields['id']]);
+      $rel = new PluginRgpdRecord_PersonalDataCategory();
+      $rel->deleteByCriteria(['plugin_rgpd_personaldatacategories_id' => $this->fields['id']]);
 
    }
 
@@ -169,7 +169,7 @@ class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
       global $DB;
 
       $p = [
-         'name'             => 'plugin_gdprropa_personaldatacategories_id',
+         'name'             => 'plugin_rgpd_personaldatacategories_id',
          'value'            => '',
          'all'              => 0,
          'width'            => '80%',
@@ -213,26 +213,26 @@ class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
 
          $query = '
             SELECT
-               `glpi_plugin_gdprropa_personaldatacategories`.`id`,
-               `glpi_plugin_gdprropa_personaldatacategories`.`name`,
-               `glpi_plugin_gdprropa_personaldatacategories`.`entities_id`,
+               `glpi_plugin_rgpd_personaldatacategories`.`id`,
+               `glpi_plugin_rgpd_personaldatacategories`.`name`,
+               `glpi_plugin_rgpd_personaldatacategories`.`entities_id`,
                `glpi_entities`.`completename`
             FROM
-               `glpi_plugin_gdprropa_personaldatacategories` 
+               `glpi_plugin_rgpd_personaldatacategories` 
             LEFT JOIN
-               `glpi_entities` ON (`glpi_plugin_gdprropa_personaldatacategories`.`entities_id` = `glpi_entities`.`id`)
+               `glpi_entities` ON (`glpi_plugin_rgpd_personaldatacategories`.`entities_id` = `glpi_entities`.`id`)
             WHERE
                (
-                  (`glpi_plugin_gdprropa_personaldatacategories`.`is_recursive` = 1 AND
-                   `glpi_plugin_gdprropa_personaldatacategories`.`entities_id` IN (' . implode(",", $entities) . ')
+                  (`glpi_plugin_rgpd_personaldatacategories`.`is_recursive` = 1 AND
+                   `glpi_plugin_rgpd_personaldatacategories`.`entities_id` IN (' . implode(",", $entities) . ')
                   ) OR (
-                   `glpi_plugin_gdprropa_personaldatacategories`.`entities_id` = ' . $p['entity'] . '
+                   `glpi_plugin_rgpd_personaldatacategories`.`entities_id` = ' . $p['entity'] . '
                   )
                ) AND (
-                  `glpi_plugin_gdprropa_personaldatacategories`.`level` = 1
+                  `glpi_plugin_rgpd_personaldatacategories`.`level` = 1
                )
             ORDER BY
-               FIELD(`glpi_plugin_gdprropa_personaldatacategories`.`entities_id`, 4) DESC';
+               FIELD(`glpi_plugin_rgpd_personaldatacategories`.`entities_id`, 4) DESC';
 
          $result = $DB->request($query);
 
@@ -286,7 +286,7 @@ class PluginGdprropaPersonalDataCategory extends CommonTreeDropdown {
          'id'                 => '3',
          'table'              => $this->getTable(),
          'field'              => 'is_special_category',
-         'name'               => __("Special category", 'gdprropa'),
+         'name'               => __("Special category", 'rgpd'),
          'searchtype'         => 'equals',
          'massiveaction'      => true,
          'datatype'           => 'bool',
