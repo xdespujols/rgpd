@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,18 +30,18 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
 
 include("../../../inc/includes.php");
-Plugin::load('gdprropa', true);
+Plugin::load('rgpd', true);
 
 if (strpos($_SERVER['PHP_SELF'], 'record_retention_contract_until_is_valid.php')) {
 
@@ -52,5 +52,5 @@ if (strpos($_SERVER['PHP_SELF'], 'record_retention_contract_until_is_valid.php')
 }
 
 if ($_POST['checked'] != '1') {
-   PluginGdprropaRecord_Retention::showContractUntilIsValidInputs($_POST);
+   PluginRgpdRecord_Retention::showContractUntilIsValidInputs($_POST);
 }
