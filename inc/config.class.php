@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,9 +44,9 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaConfig extends CommonDBTM {
+class PluginRgpdConfig extends CommonDBTM {
 
-   static $rightname = 'plugin_gdprropa_record';
+   static $rightname = 'plugin_rgpd_record';
 
    protected $core_tcpdf_fonts = [
       'courier'=>'Courier',
@@ -68,7 +68,7 @@ class PluginGdprropaConfig extends CommonDBTM {
 
    public static function getTypeName($nb = 0) {
 
-      return _n("Config", "Config", $nb, 'gdprropa');
+      return _n("Config", "Config", $nb, 'rgpd');
    }
 
    static function getConfigDefault() {
@@ -94,7 +94,7 @@ class PluginGdprropaConfig extends CommonDBTM {
          'margin_header' => 10,
          'margin_footer' => 10,
          'logo_show' => 1,
-         'logo_image' => 'gdprropa_logo.png',
+         'logo_image' => 'rgpd_logo.png',
       ];
 
       return $config;
@@ -102,7 +102,7 @@ class PluginGdprropaConfig extends CommonDBTM {
 
    static function getConfig($key = '', $key2 = '') {
 
-      $config = new PluginGdprropaConfig();
+      $config = new PluginrgpdConfig();
       $config->getFromDBByCrit(['entities_id' => 0]);
 
       if (isset($config->fields['id'])) {
@@ -120,7 +120,7 @@ class PluginGdprropaConfig extends CommonDBTM {
          }
       } else {
          // get default config
-         $default = PluginGdprropaConfig::getConfigDefault();
+         $default = PluginrgpdConfig::getConfigDefault();
 
          if (!empty($key)) {
             if (!empty($key2)) {
@@ -138,7 +138,7 @@ class PluginGdprropaConfig extends CommonDBTM {
 
       $array = [];
 
-      foreach (PluginGdprropaConfig::getConfigDefault() as $key => $value) {
+      foreach (PluginrgpdConfig::getConfigDefault() as $key => $value) {
          $array[$key] = $input[$key];
          unset($input[$key]);
       }
@@ -178,13 +178,13 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "<form method='post' action='./config.form.php'>";
       echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
       echo "<tr>";
-      echo "<th colspan='2'>" . __("Manage GDPR RoPA configuration", 'gdprropa') . "</th>";
+      echo "<th colspan='2'>" . __("Manage RGPD configuration", 'rgpd') . "</th>";
       echo "</tr>";
       echo "<tr>";
-      echo "<td colspan='2' class='center b'>" . __("System configuration", 'gdprropa') . "</td>";
+      echo "<td colspan='2' class='center b'>" . __("System configuration", 'rgpd') . "</td>";
       echo "</tr>";
       echo "<tr>";
-      echo "<td width='80%'>" . __("Keep 'is special category' strict", 'gdprropa') . "</td>";
+      echo "<td width='80%'>" . __("Keep 'is special category' strict", 'rgpd') . "</td>";
       echo "<td width='20%'>";
 
       dropdown::showYesNo('system[keep_is_special_category_strict]', $config['system']['keep_is_special_category_strict']);
@@ -192,7 +192,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>" . __("Limit retention contracts list to those selected in controller info", 'gdprropa') . "</td>";
+      echo "<td>" . __("Limit retention contracts list to those selected in controller info", 'rgpd') . "</td>";
       echo "<td>";
 
       dropdown::showYesNo('system[limit_retention_contracttypes]', $config['system']['limit_retention_contracttypes']);
@@ -200,7 +200,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>" . __("Remove sofrware when record storage medium set to Paper only if any was assigned previously", 'gdprropa') . "</td>";
+      echo "<td>" . __("Remove sofrware when record storage medium set to Paper only if any was assigned previously", 'rgpd') . "</td>";
       echo "<td>";
 
       dropdown::showYesNo('system[remove_software_when_paper_only]', $config['system']['remove_software_when_paper_only']);
@@ -208,7 +208,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>" . __("Allow add expired contract (show expired on dropdown list)", 'gdprropa') . "</td>";
+      echo "<td>" . __("Allow add expired contract (show expired on dropdown list)", 'rgpd') . "</td>";
       echo "<td>";
 
       dropdown::showYesNo('system[allow_select_expired_contracts]', $config['system']['allow_select_expired_contracts']);
@@ -216,7 +216,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>" . __("Allow add software from any entity", 'gdprropa') . "</td>";
+      echo "<td>" . __("Allow add software from any entity", 'rgpd') . "</td>";
       echo "<td>";
 
       dropdown::showYesNo('system[allow_software_from_every_entity]', $config['system']['allow_software_from_every_entity']);
@@ -224,7 +224,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>" . __("Allow retrieve controller info from ancestor entity (set as recursive) when current entity controller info is not set", 'gdprropa') . "</td>";
+      echo "<td>" . __("Allow retrieve controller info from ancestor entity (set as recursive) when current entity controller info is not set", 'rgpd') . "</td>";
       echo "<td>";
 
       dropdown::showYesNo('system[allow_controllerinfo_from_ancestor]', $config['system']['allow_controllerinfo_from_ancestor']);
@@ -232,11 +232,11 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td colspan='2' class='center b'>" . __("PDF creating configuration", 'gdprropa') . "</td>";
+      echo "<td colspan='2' class='center b'>" . __("PDF creating configuration", 'rgpd') . "</td>";
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>" . __("Codepage", 'gdprropa') . "</td>";
+      echo "<td>" . __("Codepage", 'rgpd') . "</td>";
       echo "<td>";
 
       dropdown::showFromArray('print[codepage]', ['UTF-8', 'ISO-8859-1', 'ISO-8859-2'], [
@@ -245,7 +245,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</td>";
 
       echo "<tr>";
-      echo "<td>" . __("Font name", 'gdprropa') . "</td>";
+      echo "<td>" . __("Font name", 'rgpd') . "</td>";
       echo "<td>";
 
       dropdown::showFromArray('print[font_name]', $this->core_tcpdf_fonts, [
@@ -254,7 +254,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</td>";
 
       echo "<tr>";
-      echo "<td>" . __("Font size", 'gdprropa') . "</td>";
+      echo "<td>" . __("Font size", 'rgpd') . "</td>";
       echo "<td>";
 
       Dropdown::showNumber('print[font_size]', [
@@ -267,7 +267,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</td>";
 
       echo "<tr>";
-      echo "<td>" . __("Margin left", 'gdprropa') . "</td>";
+      echo "<td>" . __("Margin left", 'rgpd') . "</td>";
       echo "<td>";
 
       Dropdown::showNumber('print[margin_left]', [
@@ -279,7 +279,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</td>";
 
       echo "<tr>";
-      echo "<td>" . __("Margin top", 'gdprropa') . "</td>";
+      echo "<td>" . __("Margin top", 'rgpd') . "</td>";
       echo "<td>";
 
       Dropdown::showNumber('print[margin_top]', [
@@ -291,7 +291,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</td>";
 
       echo "<tr>";
-      echo "<td>" . __("Margin right", 'gdprropa') . "</td>";
+      echo "<td>" . __("Margin right", 'rgpd') . "</td>";
       echo "<td>";
 
       Dropdown::showNumber('print[margin_right]', [
@@ -303,7 +303,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</td>";
 
       echo "<tr>";
-      echo "<td>" . __("Margin bottom", 'gdprropa') . "</td>";
+      echo "<td>" . __("Margin bottom", 'rgpd') . "</td>";
       echo "<td>";
 
       Dropdown::showNumber('print[margin_bottom]', [
@@ -315,7 +315,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</td>";
 
       echo "<tr>";
-      echo "<td>" . __("Header margin (from top)", 'gdprropa') . "</td>";
+      echo "<td>" . __("Header margin (from top)", 'rgpd') . "</td>";
       echo "<td>";
 
       Dropdown::showNumber('print[margin_header]', [
@@ -327,7 +327,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</td>";
 
       echo "<tr>";
-      echo "<td>" . __("Footer margin (from bottom)", 'gdprropa') . "</td>";
+      echo "<td>" . __("Footer margin (from bottom)", 'rgpd') . "</td>";
       echo "<td>";
 
       Dropdown::showNumber('print[margin_footer]', [
@@ -339,7 +339,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</td>";
 
       echo "<tr>";
-      echo "<td>" . __("Show logo", 'gdprropa') . "</td>";
+      echo "<td>" . __("Show logo", 'rgpd') . "</td>";
       echo "<td>";
 
       dropdown::showYesNo('print[logo_show]', $config['print']['logo_show']);
@@ -347,7 +347,7 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "</tr>";
 
       echo "<tr>";
-      echo "<td>" . __("Logo image filename (located in /plugins/gdprropa/images/)", 'gdprropa') . "</td>";
+      echo "<td>" . __("Logo image filename (located in /plugins/rgpd/images/)", 'rgpd') . "</td>";
       echo "<td>";
 
       echo "<input type='text' maxlength='254' name='print[logo_image]' value=\"" . $config['print']['logo_image']  . "\">";
@@ -382,60 +382,60 @@ class PluginGdprropaConfig extends CommonDBTM {
       echo "<form method='post' action='./config.form.php'>";
       echo "<table class='tab_cadre' cellpadding='5' width='50%'>";
       echo "<tr>";
-      echo "<th colspan='2'>" . __("Install sample data", 'gdprropa') . "</th>";
+      echo "<th colspan='2'>" . __("Install sample data", 'rgpd') . "</th>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>";
-      echo "<td colspan='2'><strong>" . __("Sample data will be installed for current active entity.", 'gdprropa') . "</strong></td>";
+      echo "<td colspan='2'><strong>" . __("Sample data will be installed for current active entity.", 'rgpd') . "</strong></td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Categories of data subjects", 'gdprropa') . "</td>";
+      echo "<td>" . __("Categories of data subjects", 'rgpd') . "</td>";
       echo "<td>";
       Html::showCheckbox([
          'name'  => 'install_categories_of_data_subjects',
-         'title' => __("Categories of data subjects", 'gdprropa'),
+         'title' => __("Categories of data subjects", 'rgpd'),
          'checked' => 1]);
       echo "</td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Legal bases", 'gdprropa') . "</td>";
+      echo "<td>" . __("Legal bases", 'rgpd') . "</td>";
       echo "<td>";
       Html::showCheckbox([
          'name'  => 'install_legal_bases',
-         'title' => __("Legal bases", 'gdprropa'),
+         'title' => __("Legal bases", 'rgpd'),
          'checked' => 1]);
       echo "</td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Security measures", 'gdprropa') . "</td>";
+      echo "<td>" . __("Security measures", 'rgpd') . "</td>";
       echo "<td>";
       Html::showCheckbox([
          'name'  => 'install_security_measures',
-         'title' => __("Security measures", 'gdprropa'),
+         'title' => __("Security measures", 'rgpd'),
          'checked' => 1]);
       echo "</td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Contract types", 'gdprropa') . "</td>";
+      echo "<td>" . __("Contract types", 'rgpd') . "</td>";
       echo "<td>";
       Html::showCheckbox([
          'name'  => 'install_contract_types',
-         'title' => __("Contract types", 'gdprropa'),
+         'title' => __("Contract types", 'rgpd'),
          'checked' => 1]);
       echo "</td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>";
-      echo "<td>" . __("Personal data types", 'gdprropa') . "</td>";
+      echo "<td>" . __("Personal data types", 'rgpd') . "</td>";
       echo "<td>";
       Html::showCheckbox([
          'name'  => 'install_personal_data_types',
-         'title' => __("Personal data types", 'gdprropa'),
+         'title' => __("Personal data types", 'rgpd'),
          'checked' => 1]);
       echo "</td>";
       echo "</tr>";
       echo "<tr class='tab_bg_1'>";
       echo "<td colspan='2'>";
       echo "<div class='center'>";
-      echo "<input type='submit' name='sampledata' value=\"" . __("Install", 'gdprropa') . "\" class='submit'>";
+      echo "<input type='submit' name='sampledata' value=\"" . __("Install", 'rgpd') . "\" class='submit'>";
       echo "</div>";
       echo "</td>";
       echo "</tr>";
@@ -448,109 +448,109 @@ class PluginGdprropaConfig extends CommonDBTM {
    function installSampleData($data = []) {
 
       if (isset($data['install_categories_of_data_subjects']) && ($data['install_categories_of_data_subjects'] == 1)) {
-         $sample_data = new PluginGdprropaDataSubjectsCategory();
+         $sample_data = new PluginrgpdDataSubjectsCategory();
          $sample_data->add([
-            'name' => __("Employees", 'gdprropa'),
-            'comment' => __("Company employees", 'gdprropa'),
+            'name' => __("Employees", 'rgpd'),
+            'comment' => __("Company employees", 'rgpd'),
             'entities_id' => $_SESSION['glpiactive_entity'],
          ]);
-         $sample_data = new PluginGdprropaDataSubjectsCategory();
+         $sample_data = new PluginrgpdDataSubjectsCategory();
          $sample_data->add([
-            'name' => __("Consumers", 'gdprropa'),
-            'comment' => __("Company consumers/clients", 'gdprropa'),
+            'name' => __("Consumers", 'rgpd'),
+            'comment' => __("Company consumers/clients", 'rgpd'),
             'entities_id' => $_SESSION['glpiactive_entity'],
          ]);
       }
 
       if (isset($data['install_legal_bases']) && ($data['install_legal_bases'] == 1)) {
-         $sample_data = new PluginGdprropaLegalBasisAct();
+         $sample_data = new PluginrgpdLegalBasisAct();
          $sample_data->add([
-            'name' => __("Undefined", 'gdprropa'),
-            'content' => __("N/A", 'gdprropa'),
-            'type' => PluginGdprropaLegalBasisAct::LEGALBASISACT_BLANK,
+            'name' => __("Undefined", 'rgpd'),
+            'content' => __("N/A", 'rgpd'),
+            'type' => PluginrgpdLegalBasisAct::LEGALBASISACT_BLANK,
             'entities_id' => $_SESSION['glpiactive_entity'],
             'injected' => 1,
          ]);
          $sample_data->add([
-            'name' => __("Article 6-1a", 'gdprropa'),
-            'content' =>  __("The data subject has given consent to the processing of his or her personal data for one or more specific purposes.", 'gdprropa'),
-            'type' => PluginGdprropaLegalBasisAct::LEGALBASISACT_GDPR,
+            'name' => __("Article 6-1a", 'rgpd'),
+            'content' =>  __("The data subject has given consent to the processing of his or her personal data for one or more specific purposes.", 'rgpd'),
+            'type' => PluginrgpdLegalBasisAct::LEGALBASISACT_GDPR,
             'entities_id' => $_SESSION['glpiactive_entity'],
             'injected' => 1,
          ]);
          $sample_data->add([
-            'name' => __("Article 6-1b", 'gdprropa'),
-            'content' => __("Processing is necessary for the performance of a contract to which the data subject is party or in order to take steps at the request of the data subject prior to entering into a contract.", 'gdprropa'),
-            'type' => PluginGdprropaLegalBasisAct::LEGALBASISACT_GDPR,
+            'name' => __("Article 6-1b", 'rgpd'),
+            'content' => __("Processing is necessary for the performance of a contract to which the data subject is party or in order to take steps at the request of the data subject prior to entering into a contract.", 'rgpd'),
+            'type' => PluginrgpdLegalBasisAct::LEGALBASISACT_GDPR,
             'entities_id' => $_SESSION['glpiactive_entity'],
             'injected' => 1,
          ]);
          $sample_data->add([
-            'name' => __("Article 6-1c", 'gdprropa'),
-            'content' => __("Processing is necessary for compliance with a legal obligation to which the controller is subject.", 'gdprropa'),
-            'type' => PluginGdprropaLegalBasisAct::LEGALBASISACT_GDPR,
+            'name' => __("Article 6-1c", 'rgpd'),
+            'content' => __("Processing is necessary for compliance with a legal obligation to which the controller is subject.", 'rgpd'),
+            'type' => PluginrgpdLegalBasisAct::LEGALBASISACT_GDPR,
             'entities_id' => $_SESSION['glpiactive_entity'],
             'injected' => 1,
          ]);
          $sample_data->add([
-            'name' => __("Article 6-1d", 'gdprropa'),
-            'content' =>  __("Processing is necessary in order to protect the vital interests of the data subject or of another natural person.", 'gdprropa'),
-            'type' => PluginGdprropaLegalBasisAct::LEGALBASISACT_GDPR,
+            'name' => __("Article 6-1d", 'rgpd'),
+            'content' =>  __("Processing is necessary in order to protect the vital interests of the data subject or of another natural person.", 'rgpd'),
+            'type' => PluginrgpdLegalBasisAct::LEGALBASISACT_GDPR,
             'entities_id' => $_SESSION['glpiactive_entity'],
             'injected' => 1,
          ]);
          $sample_data->add([
-            'name' => __("Article 6-1e", 'gdprropa'),
-            'content' => __("Processing is necessary for the performance of a task carried out in the public interest or in the exercise of official authority vested in the controller.", 'gdprropa'),
-            'type' => PluginGdprropaLegalBasisAct::LEGALBASISACT_GDPR,
+            'name' => __("Article 6-1e", 'rgpd'),
+            'content' => __("Processing is necessary for the performance of a task carried out in the public interest or in the exercise of official authority vested in the controller.", 'rgpd'),
+            'type' => PluginrgpdLegalBasisAct::LEGALBASISACT_GDPR,
             'entities_id' => $_SESSION['glpiactive_entity'],
             'injected' => 1,
          ]);
          $sample_data->add([
-            'name' => __("Article 6-1f", 'gdprropa'),
-            'content' => __("Processing is necessary for the purposes of the legitimate interests pursued by the controller or by a third party, except where such interests are overridden by the interests or fundamental rights and freedoms of the data subject which require protection of personal data, in particular where the data subject is a child.", 'gdprropa'),
-            'type' => PluginGdprropaLegalBasisAct::LEGALBASISACT_GDPR,
+            'name' => __("Article 6-1f", 'rgpd'),
+            'content' => __("Processing is necessary for the purposes of the legitimate interests pursued by the controller or by a third party, except where such interests are overridden by the interests or fundamental rights and freedoms of the data subject which require protection of personal data, in particular where the data subject is a child.", 'rgpd'),
+            'type' => PluginrgpdLegalBasisAct::LEGALBASISACT_GDPR,
             'entities_id' => $_SESSION['glpiactive_entity'],
             'injected' => 1,
          ]);
       }
 
       if (isset($data['install_security_measures']) && ($data['install_security_measures'] == 1)) {
-         $sample_data = new PluginGdprropaSecurityMeasure();
+         $sample_data = new PluginrgpdSecurityMeasure();
          $sample_data->add([
-            'name' => __("DPO was appointed", 'gdprropa'),
-            'type' => PluginGdprropaSecurityMeasure::SECURITYMEASURE_TYPE_ORGANIZATION,
-            'comment' => __("Data Protection Officer was appointed", 'gdprropa'),
+            'name' => __("DPO was appointed", 'rgpd'),
+            'type' => PluginrgpdSecurityMeasure::SECURITYMEASURE_TYPE_ORGANIZATION,
+            'comment' => __("Data Protection Officer was appointed", 'rgpd'),
             'entities_id' => $_SESSION['glpiactive_entity'],
          ]);
          $sample_data->add([
-            'name' => __("Computers Usage Policy", 'gdprropa'),
-            'type' => PluginGdprropaSecurityMeasure::SECURITYMEASURE_TYPE_ORGANIZATION,
-            'comment' => __("Internal policy regarding usage of computers", 'gdprropa'),
+            'name' => __("Computers Usage Policy", 'rgpd'),
+            'type' => PluginrgpdSecurityMeasure::SECURITYMEASURE_TYPE_ORGANIZATION,
+            'comment' => __("Internal policy regarding usage of computers", 'rgpd'),
             'entities_id' => $_SESSION['glpiactive_entity'],
          ]);
          $sample_data->add([
-            'name' => __("24h Security", 'gdprropa'),
-            'type' => PluginGdprropaSecurityMeasure::SECURITYMEASURE_TYPE_PHYSICAL,
-            'comment' => __("Securtiy personel on site for 24h", 'gdprropa'),
+            'name' => __("24h Security", 'rgpd'),
+            'type' => PluginrgpdSecurityMeasure::SECURITYMEASURE_TYPE_PHYSICAL,
+            'comment' => __("Securtiy personel on site for 24h", 'rgpd'),
             'entities_id' => $_SESSION['glpiactive_entity'],
          ]);
          $sample_data->add([
-            'name' => __("UPS system", 'gdprropa'),
-            'type' => PluginGdprropaSecurityMeasure::SECURITYMEASURE_TYPE_PHYSICAL,
-            'comment' => __("Uninterruptidle power supply is installed", 'gdprropa'),
+            'name' => __("UPS system", 'rgpd'),
+            'type' => PluginrgpdSecurityMeasure::SECURITYMEASURE_TYPE_PHYSICAL,
+            'comment' => __("Uninterruptidle power supply is installed", 'rgpd'),
             'entities_id' => $_SESSION['glpiactive_entity'],
          ]);
          $sample_data->add([
-            'name' => __("Antivirus App", 'gdprropa'),
-            'type' => PluginGdprropaSecurityMeasure::SECURITYMEASURE_TYPE_IT,
-            'comment' => __("Computers have Antivirus app installed", 'gdprropa'),
+            'name' => __("Antivirus App", 'rgpd'),
+            'type' => PluginrgpdSecurityMeasure::SECURITYMEASURE_TYPE_IT,
+            'comment' => __("Computers have Antivirus app installed", 'rgpd'),
             'entities_id' => $_SESSION['glpiactive_entity'],
          ]);
          $sample_data->add([
-            'name' => __("Firewall", 'gdprropa'),
-            'type' => PluginGdprropaSecurityMeasure::SECURITYMEASURE_TYPE_IT,
-            'comment' => __("Firewall protects internal network", 'gdprropa'),
+            'name' => __("Firewall", 'rgpd'),
+            'type' => PluginrgpdSecurityMeasure::SECURITYMEASURE_TYPE_IT,
+            'comment' => __("Firewall protects internal network", 'rgpd'),
             'entities_id' => $_SESSION['glpiactive_entity'],
          ]);
       }
@@ -558,56 +558,56 @@ class PluginGdprropaConfig extends CommonDBTM {
       if (isset($data['install_contract_types']) && ($data['install_contract_types'] == 1)) {
          $sample_data = new ContractType();
          $sample_data->add([
-            'name' => __("GDPR Joint Controller Contract", 'gdprropa'),
-            'comment' => __("GDPR Joint Controller Contract", 'gdprropa'),
+            'name' => __("GDPR Joint Controller Contract", 'rgpd'),
+            'comment' => __("GDPR Joint Controller Contract", 'rgpd'),
          ]);
          $sample_data->add([
-            'name' => __("GDPR Processor Contract", 'gdprropa'),
-            'comment' => __("GDPR Processor Contract", 'gdprropa'),
+            'name' => __("GDPR Processor Contract", 'rgpd'),
+            'comment' => __("GDPR Processor Contract", 'rgpd'),
          ]);
          $sample_data->add([
-            'name' => __("GDPR Thirdparty Contract", 'gdprropa'),
-            'comment' => __("GDPR Thirdparty Contract", 'gdprropa'),
+            'name' => __("GDPR Thirdparty Contract", 'rgpd'),
+            'comment' => __("GDPR Thirdparty Contract", 'rgpd'),
          ]);
          $sample_data->add([
-            'name' => __("GDPR Internal Contract", 'gdprropa'),
-            'comment' => __("GDPR Internal Contract", 'gdprropa'),
+            'name' => __("GDPR Internal Contract", 'rgpd'),
+            'comment' => __("GDPR Internal Contract", 'rgpd'),
          ]);
          $sample_data->add([
-            'name' => __("GDPR Other Contract", 'gdprropa'),
-            'comment' => __("GDPR Other Contract", 'gdprropa'),
+            'name' => __("GDPR Other Contract", 'rgpd'),
+            'comment' => __("GDPR Other Contract", 'rgpd'),
          ]);
       }
 
       if (isset($data['install_personal_data_types']) && ($data['install_personal_data_types'] == 1)) {
-         $sample_data = new PluginGdprropaPersonalDataCategory();
+         $sample_data = new PluginrgpdPersonalDataCategory();
          $parent_id = $sample_data->add([
-            'name' => __("Employees record", 'gdprropa'),
-            'comment' => __("Employee personal data", 'gdprropa'),
+            'name' => __("Employees record", 'rgpd'),
+            'comment' => __("Employee personal data", 'rgpd'),
             'is_special_category' => false,
             'entities_id' => $_SESSION['glpiactive_entity'],
          ]);
          if ($parent_id) {
             $sample_data->add([
-               'name' => __("First name", 'gdprropa'),
-               'comment' => __("Employee first name", 'gdprropa'),
+               'name' => __("First name", 'rgpd'),
+               'comment' => __("Employee first name", 'rgpd'),
                'entities_id' => $_SESSION['glpiactive_entity'],
                'is_special_category' => false,
-               'plugin_gdprropa_personaldatacategories_id' => $parent_id
+               'plugin_rgpd_personaldatacategories_id' => $parent_id
             ]);
             $sample_data->add([
-               'name' => __("Last name", 'gdprropa'),
-               'comment' => __("Employee last name", 'gdprropa'),
+               'name' => __("Last name", 'rgpd'),
+               'comment' => __("Employee last name", 'rgpd'),
                'entities_id' => $_SESSION['glpiactive_entity'],
                'is_special_category' => false,
-               'plugin_gdprropa_personaldatacategories_id' => $parent_id
+               'plugin_rgpd_personaldatacategories_id' => $parent_id
             ]);
             $sample_data->add([
-               'name' => __("Personal ID", 'gdprropa'),
-               'comment' => __("Employee personal ID", 'gdprropa'),
+               'name' => __("Personal ID", 'rgpd'),
+               'comment' => __("Employee personal ID", 'rgpd'),
                'entities_id' => $_SESSION['glpiactive_entity'],
                'is_special_category' => true,
-               'plugin_gdprropa_personaldatacategories_id' => $parent_id
+               'plugin_rgpd_personaldatacategories_id' => $parent_id
             ]);
          }
       }
