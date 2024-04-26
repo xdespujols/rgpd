@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,12 +44,12 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaRecord_Software extends CommonDBRelation {
+class PluginRgpdRecord_Software extends CommonDBRelation {
 
-   static $rightname = 'plugin_gdprropa_record';
+   static $rightname = 'plugin_rgpd_record';
 
-   static public $itemtype_1 = 'PluginGdprropaRecord';
-   static public $items_id_1 = 'plugin_gdprropa_records_id';
+   static public $itemtype_1 = 'PluginRgpdRecord';
+   static public $items_id_1 = 'plugin_rgpd_records_id';
    static public $itemtype_2 = 'Software';
    static public $items_id_2 = 'softwares_id';
 
@@ -71,7 +71,7 @@ class PluginGdprropaRecord_Software extends CommonDBRelation {
 
    static function getTypeName($nb = 0) {
 
-      return _n("Software", "Software", $nb, 'gdprropa');
+      return _n("Software", "Software", $nb, 'rgpd');
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -81,9 +81,9 @@ class PluginGdprropaRecord_Software extends CommonDBRelation {
       }
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
 
-            if ($item->fields['storage_medium'] == PluginGdprropaRecord::STORAGE_MEDIUM_PAPER_ONLY) {
+            if ($item->fields['storage_medium'] == PluginRgpdRecord::STORAGE_MEDIUM_PAPER_ONLY) {
                return false;
             }
 
@@ -92,7 +92,7 @@ class PluginGdprropaRecord_Software extends CommonDBRelation {
                $nb = self::countForItem($item);
             }
 
-            return self::createTabEntry(PluginGdprropaRecord_Software::getTypeName($nb), $nb);
+            return self::createTabEntry(PluginRgpdRecord_Software::getTypeName($nb), $nb);
       }
 
       return '';
@@ -101,7 +101,7 @@ class PluginGdprropaRecord_Software extends CommonDBRelation {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
             self::showForRecord($item, $withtemplate);
             break;
       }
@@ -109,7 +109,7 @@ class PluginGdprropaRecord_Software extends CommonDBRelation {
       return true;
    }
 
-   static function showForRecord(PluginGdprropaRecord $record, $withtemplate = 0) {
+   static function showForRecord(PluginRgpdRecord $record, $withtemplate = 0) {
 
       $id = $record->fields['id'];
       if (!Software::canView() || !$record->can($id, READ)) {
@@ -133,13 +133,13 @@ class PluginGdprropaRecord_Software extends CommonDBRelation {
          echo "<div class='firstbloc'>";
          echo "<form name='ticketitem_form$rand' id='ticketitem_form$rand' method='post'
             action='" . Toolbox::getItemTypeFormURL(__class__) . "'>";
-         echo "<input type='hidden' name='plugin_gdprropa_records_id' value='$id' />";
+         echo "<input type='hidden' name='plugin_rgpd_records_id' value='$id' />";
 
          echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th>" . __("Add a software", 'gdprropa') . "</th></tr>";
+         echo "<tr class='tab_bg_2'><th>" . __("Add a software", 'rgpd') . "</th></tr>";
          echo "<tr class='tab_bg_1'><td width='80%' class='center'>";
 
-         if (PluginGdprropaConfig::getConfig('system', 'allow_software_from_every_entity')) {
+         if (PluginRgpdConfig::getConfig('system', 'allow_software_from_every_entity')) {
             $entity = 0;
             $entity_sons = true;
          } else {
@@ -248,13 +248,13 @@ class PluginGdprropaRecord_Software extends CommonDBRelation {
 
    static function countForItem(CommonDBTM $item) {
 
-      return countElementsInTable(PluginGdprropaRecord_Software::getTable(),
-                                  ['plugin_gdprropa_records_id' => $item->getID()]);
+      return countElementsInTable(PluginRgpdRecord_Software::getTable(),
+                                  ['plugin_rgpd_records_id' => $item->getID()]);
    }
 
    static function cleanForItem(CommonDBTM $item) {
 
-      $rel = new PluginGdprropaRecord_Software();
+      $rel = new PluginRgpdRecord_Software();
       $rel->deleteByCriteria([
          'itemtype' => $item->getType(),
          'softwares_id' => $item->fields['id']
