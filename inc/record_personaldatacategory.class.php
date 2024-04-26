@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,12 +30,12 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
@@ -44,16 +44,16 @@ if (!defined('GLPI_ROOT')) {
    die("Sorry. You can't access this file directly");
 }
 
-class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
+class PluginRgpdRecord_PersonalDataCategory extends CommonDBRelation {
 
-   static public $itemtype_1 = 'PluginGdprropaRecord';
-   static public $items_id_1 = 'plugin_gdprropa_records_id';
-   static public $itemtype_2 = 'PluginGdprropaPersonalDataCategory';
-   static public $items_id_2 = 'plugin_gdprropa_personaldatacategories_id';
+   static public $itemtype_1 = 'PluginRgpdRecord';
+   static public $items_id_1 = 'plugin_rgpd_records_id';
+   static public $itemtype_2 = 'PluginRgpdPersonalDataCategory';
+   static public $items_id_2 = 'plugin_rgpd_personaldatacategories_id';
 
    static function getTypeName($nb = 0) {
 
-      return _n("Personal Data Category", "Personal Data Categories", $nb, 'gdprropa');
+      return _n("Personal Data Category", "Personal Data Categories", $nb, 'rgpd');
    }
 
    function getTabNameForItem(CommonGLPI $item, $withtemplate = 0) {
@@ -63,14 +63,14 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
       }
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
 
             $nb = 0;
             if ($_SESSION['glpishow_count_on_tabs']) {
                $nb = self::countForItem($item);
             }
 
-            return self::createTabEntry(PluginGdprropaRecord_PersonalDataCategory::getTypeName($nb), $nb);
+            return self::createTabEntry(PluginRgpdRecord_PersonalDataCategory::getTypeName($nb), $nb);
       }
 
       return '';
@@ -79,7 +79,7 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
    static function displayTabContentForItem(CommonGLPI $item, $tabnum = 1, $withtemplate = 0) {
 
       switch ($item->getType()) {
-         case PluginGdprropaRecord::class :
+         case PluginRgpdRecord::class :
             self::showForRecord($item, $withtemplate);
             break;
       }
@@ -87,7 +87,7 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
       return true;
    }
 
-   static function showForRecord(PluginGdprropaRecord $record, $withtemplate = 0) {
+   static function showForRecord(PluginRgpdRecord $record, $withtemplate = 0) {
 
       $id = $record->fields['id'];
       if (!$record->can($id, READ)) {
@@ -111,17 +111,17 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
          echo "<div class='firstbloc'>";
          echo "<form name='ticketitem_form$rand' id='ticketitem_form$rand' method='post'
             action='" . Toolbox::getItemTypeFormURL(__class__) . "'>";
-         echo "<input type='hidden' name='plugin_gdprropa_records_id' value='$id' />";
+         echo "<input type='hidden' name='plugin_rgpd_records_id' value='$id' />";
 
          echo "<table class='tab_cadre_fixe'>";
-         echo "<tr class='tab_bg_2'><th>" . __("Add a personal data category", 'gdprropa') . "</th></tr>";
+         echo "<tr class='tab_bg_2'><th>" . __("Add a personal data category", 'rgpd') . "</th></tr>";
          echo "<tr class='tab_bg_3'><td><center><strong>";
-         echo __("GDPR Article 30 1c", 'gdprropa');
+         echo __("GDPR Article 30 1c", 'rgpd');
          echo "</strong></center></td></tr>";
          echo "<tr class='tab_bg_1'><td width='80%' class='center'>";
-         PluginGdprropaPersonalDataCategory::dropdownLimitLevel([
-            'addicon'  => PluginGdprropaPersonalDataCategory::canCreate(),
-            'name' => 'plugin_gdprropa_personaldatacategories_id',
+         PluginRgpdPersonalDataCategory::dropdownLimitLevel([
+            'addicon'  => PluginRgpdPersonalDataCategory::canCreate(),
+            'name' => 'plugin_rgpd_personaldatacategories_id',
             'entity' => $record->fields['entities_id'],
             'entity_sons' => false,
             'used' => $used,
@@ -159,8 +159,8 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
          }
 
          $header_end .= "<th>" . __("Name") . "</th>";
-         $header_end .= "<th>" . __("Type", 'gdprropa') . "</th>";
-         $header_end .= "<th>" . __("Introduced in", 'gdprropa') . "</th>";
+         $header_end .= "<th>" . __("Type", 'rgpd') . "</th>";
+         $header_end .= "<th>" . __("Introduced in", 'rgpd') . "</th>";
          $header_end .= "<th>" . __("Comment") . "</th>";
          $header_end .= "</tr>";
 
@@ -180,7 +180,7 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
             if ($_SESSION['glpiis_ids_visible'] || empty($data['name'])) {
                $link = sprintf(__("%1\$s (%2\$s)"), $link, $data['id']);
             }
-            $name = "<a href=\"" . PluginGdprropaPersonalDataCategory::getFormURLWithID($data['id']) . "\">" . $link . "</a>";
+            $name = "<a href=\"" . PluginRgpdPersonalDataCategory::getFormURLWithID($data['id']) . "\">" . $link . "</a>";
 
             echo "<td class='left" . (isset($data['is_deleted']) && $data['is_deleted'] ? " tab_bg_2_2'" : "'");
             echo ">" . $name . "</td>";
@@ -188,7 +188,7 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
             $is_special_category = '';
 
             if ($data['is_special_category']) {
-               $is_special_category = __("Special category", 'gdprropa');
+               $is_special_category = __("Special category", 'rgpd');
             }
 
             echo "<td class='center'>" . $is_special_category . " </td>";
@@ -233,25 +233,25 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
       $result = 0;
       $msg = '';
 
-      $ancestors = getAncestorsOf(PluginGdprropaPersonalDataCategory::getTable(), $data['plugin_gdprropa_personaldatacategories_id']);
-      $sons = getSonsOf(PluginGdprropaPersonalDataCategory::getTable(), $data['plugin_gdprropa_personaldatacategories_id']);
+      $ancestors = getAncestorsOf(PluginRgpdPersonalDataCategory::getTable(), $data['plugin_rgpd_personaldatacategories_id']);
+      $sons = getSonsOf(PluginRgpdPersonalDataCategory::getTable(), $data['plugin_rgpd_personaldatacategories_id']);
       array_shift($sons);
 
-      $pdc = $DB->query('SELECT `plugin_gdprropa_personaldatacategories_id` FROM `' . $this->getTable() .'` WHERE `plugin_gdprropa_records_id` = ' . $data['plugin_gdprropa_records_id'] . ' ');
+      $pdc = $DB->query('SELECT `plugin_rgpd_personaldatacategories_id` FROM `' . $this->getTable() .'` WHERE `plugin_rgpd_records_id` = ' . $data['plugin_rgpd_records_id'] . ' ');
       while ($item = $DB->fetch_assoc($pdc)) {
-         if ($data['plugin_gdprropa_personaldatacategories_id'] == $item['plugin_gdprropa_personaldatacategories_id']) {
+         if ($data['plugin_rgpd_personaldatacategories_id'] == $item['plugin_rgpd_personaldatacategories_id']) {
             $result = 1;
-            $msg =  __('Selected item is already on list.', 'gdprropa');
+            $msg =  __('Selected item is already on list.', 'rgpd');
             break;
          } else {
-            if (in_array($item['plugin_gdprropa_personaldatacategories_id'], $ancestors)) {
+            if (in_array($item['plugin_rgpd_personaldatacategories_id'], $ancestors)) {
                $result = 2;
-               $msg =  __('Cannot add child item if parent is already on the list.', 'gdprropa');
+               $msg =  __('Cannot add child item if parent is already on the list.', 'rgpd');
                break;
             } else {
-               if (count($sons) && in_array($item['plugin_gdprropa_personaldatacategories_id'], $sons)) {
+               if (count($sons) && in_array($item['plugin_rgpd_personaldatacategories_id'], $sons)) {
                   $result = 3;
-                  $msg =  __('Cannot add Parent item if child is already on the list.<br>Remove child items before adding parent.', 'gdprropa');
+                  $msg =  __('Cannot add Parent item if child is already on the list.<br>Remove child items before adding parent.', 'rgpd');
                   break;
                }
             }
@@ -271,12 +271,12 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
 
       $tab[] = [
          'id' => 'personaldatacategory',
-         'name' => PluginGdprropaRecord_PersonalDataCategory::getTypeName(0)
+         'name' => PluginRgpdRecord_PersonalDataCategory::getTypeName(0)
       ];
 
       $tab[] = [
          'id' => '221',
-         'table' => PluginGdprropaPersonalDataCategory::getTable(),
+         'table' => PluginRgpdPersonalDataCategory::getTable(),
          'field' => 'name',
          'name' => __("Name"),
          'forcegroupby' => true,
@@ -293,9 +293,9 @@ class PluginGdprropaRecord_PersonalDataCategory extends CommonDBRelation {
       ];
       $tab[] = [
          'id' => '222',
-         'table' => PluginGdprropaPersonalDataCategory::getTable(),
+         'table' => PluginRgpdPersonalDataCategory::getTable(),
          'field' => 'is_special_category',
-         'name' => __("Any special category", 'gdprropa'),
+         'name' => __("Any special category", 'rgpd'),
          'forcegroupby' => true,
          'massiveaction' => false,
          'datatype' => 'bool',
