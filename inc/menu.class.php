@@ -4,7 +4,7 @@
  GDPR Records of Processing Activities plugin for GLPI
  Copyright (C) 2020 by Yild.
 
- https://github.com/yild/gdprropa
+ https://github.com/xdespujols/rgpd
  -------------------------------------------------------------------------
 
  LICENSE
@@ -30,45 +30,45 @@
 
  --------------------------------------------------------------------------
 
-  @package   gdprropa
-  @author    Yild
+  @package   rgpd
+  @author    XDespujols
   @copyright Copyright (c) 2020 by Yild
   @license   GPLv3+
              http://www.gnu.org/licenses/gpl.txt
-  @link      https://github.com/yild/gdprropa
+  @link      https://github.com/xdespujols/rgpd
   @since     2020
  --------------------------------------------------------------------------
  */
 
-class PluginGdprropaMenu extends CommonGLPI
+class PluginRgpdMenu extends CommonGLPI
 {
-   static $rightname = 'plugin_gdprropa_record';
+   static $rightname = 'plugin_rgpd_record';
 
    static function getMenuName() {
 
-      return PluginGdprropaRecord::getTypeName(2);
+      return PluginRgpdRecord::getTypeName(2);
 
    }
 
    static function getMenuContent() {
 
-      $image = "<i class='fas fa-print fa-2x' title='" . __("Create PDF for all records within active entity and its sons", 'gdprropa') . "'></i>";
+      $image = "<i class='fas fa-print fa-2x' title='" . __("Create PDF for all records within active entity and its sons", 'rgpd') . "'></i>";
 
       $menu = [];
-      $menu['title'] = PluginGdprropaMenu::getMenuName();
-      $menu['page'] = '/plugins/gdprropa/front/record.php';
-      $menu['links']['search'] = PluginGdprropaRecord::getSearchURL(false);
-      $menu['links'][$image] = PluginGdprropaCreatepdf::getSearchURL(false) . '?createpdf&action=prepare&type=' . PluginGdprropaCreatePDF::REPORT_ALL;
-      if (PluginGdprropaRecord::canCreate()) {
-         $menu['links']['add'] = PluginGdprropaRecord::getFormURL(false);
+      $menu['title'] = PluginRgpdMenu::getMenuName();
+      $menu['page'] = '/plugins/rgpd/front/record.php';
+      $menu['links']['search'] = PluginRgpdRecord::getSearchURL(false);
+      $menu['links'][$image] = PluginRgpdCreatepdf::getSearchURL(false) . '?createpdf&action=prepare&type=' . PluginRgpdCreatePDF::REPORT_ALL;
+      if (PluginRgpdRecord::canCreate()) {
+         $menu['links']['add'] = PluginRgpdRecord::getFormURL(false);
       }
 
-      $menu['options']['gdprropa']['title'] = PluginGdprropaMenu::getMenuName();
-      $menu['options']['gdprropa']['page'] = PluginGdprropaRecord::getSearchURL(false);
-      $menu['options']['gdprropa']['links']['search'] = PluginGdprropaRecord::getSearchURL(false);
-      $menu['options']['gdprropa']['links'][$image] = PluginGdprropaCreatepdf::getSearchURL(false) . '?createpdf&action=prepare&type=' . PluginGdprropaCreatePDF::REPORT_ALL;
-      if (PluginGdprropaRecord::canCreate()) {
-         $menu['options']['gdprropa']['links']['add'] = PluginGdprropaRecord::getFormURL(false);
+      $menu['options']['rgpd']['title'] = PluginRgpdMenu::getMenuName();
+      $menu['options']['rgpd']['page'] = PluginRgpdRecord::getSearchURL(false);
+      $menu['options']['rgpd']['links']['search'] = PluginRgpdRecord::getSearchURL(false);
+      $menu['options']['rgpd']['links'][$image] = PluginRgpdCreatepdf::getSearchURL(false) . '?createpdf&action=prepare&type=' . PluginRgpdCreatePDF::REPORT_ALL;
+      if (PluginRgpdRecord::canCreate()) {
+         $menu['options']['rgpd']['links']['add'] = PluginRgpdRecord::getFormURL(false);
       }
 
       return $menu;
@@ -76,11 +76,11 @@ class PluginGdprropaMenu extends CommonGLPI
 
    static function removeRightsFromSession() {
 
-      if (isset($_SESSION['glpimenu']['admin']['types']['PluginGdprropaMenu'])) {
-         unset($_SESSION['glpimenu']['admin']['types']['PluginGdprropaMenu']);
+      if (isset($_SESSION['glpimenu']['admin']['types']['PluginRgpdMenu'])) {
+         unset($_SESSION['glpimenu']['admin']['types']['PluginRgpdMenu']);
       }
-      if (isset($_SESSION['glpimenu']['admin']['content']['PluginGdprropaMenu'])) {
-         unset($_SESSION['glpimenu']['admin']['content']['PluginGdprropaMenu']);
+      if (isset($_SESSION['glpimenu']['admin']['content']['PluginRgpdMenu'])) {
+         unset($_SESSION['glpimenu']['admin']['content']['PluginRgpdMenu']);
       }
 
    }
