@@ -1,6 +1,7 @@
 # GLPI GDPR / RGPD
 
 Based on [DPO Register](https://github.com/karhel/glpi-dporegister) plugin, by Karhel Tmarr. Some code was included or is similar to DPO Register.
+
 Based on [GDPRROPA](https://github.com/yild/gdprropa) plugin, Yild.
 
 Registry of Processing Activities for GDPR - [GLPI](https://github.com/glpi-project/glpi/) Plugin
