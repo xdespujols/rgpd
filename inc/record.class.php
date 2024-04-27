@@ -81,6 +81,38 @@ class PluginRgpdRecord extends CommonDBTM {
       return _n("GDPR Record of Processing Activity", "GDPR Records of Processing Activities", $nb, 'rgpd');
    }
 
+   static function convertImageToTag($content_html, $force_update = false) {
+   
+   if (!empty($content_html)) {
+   preg_match_all("/alt\s*=\s*['|\"](.+?)['|\"]/", $content_html, $matches, PREG_PATTERN_ORDER);
+   if (isset($matches[1]) && count($matches[1])) {
+   // Get all image src
+   foreach ($matches[1] as $src) {
+   // Set tag if image matches
+   $content_html = preg_replace(["/<img.*alt=['|\"]".$src."['|\"][^>]*\>/", "/<object.*alt=['|\"]".$src."['|\"][^>]*\>/"], Document::getImageTag($src), $content_html);
+   }
+   }
+   
+   return $content_html;
+   }
+   }
+ 
+   static function setSimpleTextContent($content) {
+   
+   $content = Html::entity_decode_deep($content);
+   $content = Self::convertImageToTag($content);
+   
+   // If is html content
+   if ($content != strip_tags($content)) {
+   $content = Toolbox::getHtmlToDisplay($content);
+   }
+   
+   return $content;
+   }
+
+
+
+ 
    function showForm($id, $options = []) {
 
       global $CFG_GLPI;
@@ -98,7 +130,7 @@ class PluginRgpdRecord extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Purpose (GDPR Article 30 1b)", 'rgpd') . "</td>";
       echo "<td colspan='2'>";
-      $purpose = Html::setSimpleTextContent($this->fields['content']);
+      $purpose = Self::setSimpleTextContent($this->fields['content']);
       echo "<textarea style='width:98%' name='content' required maxlength='1000' rows='3'>" . $purpose . "</textarea>";
       echo "</td></tr>";
 
@@ -164,7 +196,7 @@ class PluginRgpdRecord extends CommonDBTM {
       echo "<tr class='tab_bg_1'>";
       echo "<td>" . __("Additional information", 'rgpd') . "</td>";
       echo "<td colspan='2'>";
-      $additional_info = Html::setSimpleTextContent($this->fields['additional_info']);
+      $additional_info = Self::setSimpleTextContent($this->fields['additional_info']);
       echo "<textarea style='width: 98%;' name='additional_info' maxlength='1000' rows='3'>" . $additional_info . "</textarea>";
       echo "</td></tr>";
       $this->showFormButtons($options);
@@ -186,7 +218,7 @@ class PluginRgpdRecord extends CommonDBTM {
       if ($data['consent_required']) {
          echo "<td>" . __("Consent storage", 'rgpd') . "</td>";
          echo "<td colspan='2'>";
-         $consent_storage = Html::setSimpleTextContent($data['consent_storage']);
+         $consent_storage = Self::setSimpleTextContent($data['consent_storage']);
          echo "<textarea style='width: 98%;' name='consent_storage' maxlength='1000' rows='3'>" . $consent_storage . "</textarea>";
          echo "</td>";
       }
