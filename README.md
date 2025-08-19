@@ -20,6 +20,7 @@ Main features:
 * Assign software
 * PDF output
 * Each entity can have separated controller info: legal representative, DPO and name, different contract types
+* Dashboard widget with number of Records per entity (and its sons).
 * additional configuration
 
 
@@ -86,7 +87,7 @@ Global page settings can be set at Setup->Plugins->GDPR Records of Processing Ac
 ## Contributing
 
 * Open a ticket for each bug/feature so it can be discussed
-* Follow [development guidelines](http://glpi-developer-documentation.readthedocs.io/en/latest/plugins/index.html)
-* Refer to [GitFlow](http://git-flow.readthedocs.io/) process for branching
+* Follow [development guidelines](https://glpi-developer-documentation.readthedocs.io/en/latest/plugins/index.html)
+* Refer to [GitFlow](https://git-flow.readthedocs.io/) process for branching
 * Work on a new branch on your own fork
 * Open a PR that will be reviewed by a developer

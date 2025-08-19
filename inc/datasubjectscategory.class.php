@@ -1,8 +1,9 @@
 <?php
+
 /*
  -------------------------------------------------------------------------
  GDPR Records of Processing Activities plugin for GLPI
- Copyright (C) 2020 by Yild.
+ Copyright © 2020-2025 by Yild.
 
  https://github.com/yild/gdprropa
  -------------------------------------------------------------------------
@@ -24,7 +25,7 @@
 
  You should have received a copy of the GNU General Public License
  along with GDPR Records of Processing Activities.
- If not, see <http://www.gnu.org/licenses/>.
+ If not, see <https://www.gnu.org/licenses/>.
 
  Based on DPO Register plugin, by Karhel Tmarr.
 
@@ -32,109 +33,111 @@
 
   @package   gdprropa
   @author    Yild
-  @copyright Copyright (c) 2020 by Yild
+  @copyright Copyright © 2020-2025 by Yild
   @license   GPLv3+
-             http://www.gnu.org/licenses/gpl.txt
+             https://www.gnu.org/licenses/gpl.txt
   @link      https://github.com/yild/gdprropa
-  @since     2020
+  @since     1.0.0
  --------------------------------------------------------------------------
  */
 
-if (!defined('GLPI_ROOT')) {
-   die("Sorry. You can't access this file directly");
-}
+namespace GlpiPlugin\Gdprropa;
 
-class PluginGdprropaDataSubjectsCategory extends CommonDropdown {
+use CommonDropdown;
+use Session;
 
-   static $rightname = 'plugin_gdprropa_datasubjectscategory';
+class DataSubjectsCategory extends CommonDropdown
+{
+    public static $rightname = 'plugin_gdprropa_datasubjectscategory';
 
-   public $dohistory = true;
+    // TODO check description in Record class
+    protected static $showTitleInNavigationHeader = true;
 
-   protected $usenotepad = true;
+    public $dohistory = true;
 
-   static function getTypeName($nb = 0) {
+    protected $usenotepad = true;
 
-      return _n("Category of data subjects", "Categories of data subjects", $nb, 'gdprropa');
-   }
+    public static function getTypeName($nb = 0): string
+    {
+        return _n("Category of data subjects", "Categories of data subjects", $nb, 'gdprropa');
+    }
 
-   function prepareInputForAdd($input) {
+    public function prepareInputForAdd($input): bool|array
+    {
+        $input['users_id_creator'] = Session::getLoginUserID();
 
-      $input['users_id_creator'] = Session::getLoginUserID();
+        return parent::prepareInputForAdd($input);
+    }
 
-      return parent::prepareInputForAdd($input);
-   }
+    public function prepareInputForUpdate($input): bool|array
+    {
+        $input['users_id_lastupdater'] = Session::getLoginUserID();
 
-   function prepareInputForUpdate($input) {
+        return parent::prepareInputForUpdate($input);
+    }
 
-      $input['users_id_lastupdater'] = Session::getLoginUserID();
+    public function cleanDBonPurge(): void
+    {
+        $rel = new Record_DataSubjectsCategory();
+        $rel->deleteByCriteria(['plugin_gdprropa_datasubjectscategories_id' => $this->fields['id']]);
+    }
 
-      return parent::prepareInputForUpdate($input);
-   }
+    public function rawSearchOptions(): array
+    {
+        $tab = [];
 
-   function cleanDBonPurge() {
+        $tab[] = [
+            'id'                 => 'common',
+            'name'               => __("Characteristics")
+        ];
 
-      $rel = new PluginGdprropaRecord_DataSubjectsCategory();
-      $rel->deleteByCriteria(['plugin_gdprropa_datasubjectscategories_id' => $this->fields['id']]);
+        $tab[] = [
+            'id'                 => '1',
+            'table'              => $this->getTable(),
+            'field'              => 'name',
+            'name'               => __("Name"),
+            'datatype'           => 'itemlink',
+            'massiveaction'      => false,
+            'autocomplete'       => true,
+        ];
 
-   }
+        $tab[] = [
+            'id'                 => '2',
+            'table'              => $this->getTable(),
+            'field'              => 'id',
+            'name'               => __("ID"),
+            'massiveaction'      => false,
+            'datatype'           => 'number',
+        ];
 
-   function rawSearchOptions() {
+        $tab[] = [
+            'id'                 => '3',
+            'table'              => $this->getTable(),
+            'field'              => 'comment',
+            'name'               => __("Comments"),
+            'datatype'           => 'text',
+            'toview'             => true,
+            'massiveaction'      => true,
+        ];
 
-      $tab = [];
+        $tab[] = [
+            'id'                 => '4',
+            'table'              => 'glpi_entities',
+            'field'              => 'completename',
+            'name'               => __("Entity"),
+            'datatype'           => 'dropdown',
+            'massiveaction'      => true,
+        ];
 
-      $tab[] = [
-         'id'                 => 'common',
-         'name'               => __("Characteristics")
-      ];
+        $tab[] = [
+            'id'                 => '5',
+            'table'              => $this->getTable(),
+            'field'              => 'is_recursive',
+            'name'               => __("Child entities"),
+            'datatype'           => 'bool',
+            'massiveaction'      => false,
+        ];
 
-      $tab[] = [
-         'id'                 => '1',
-         'table'              => $this->getTable(),
-         'field'              => 'name',
-         'name'               => __("Name"),
-         'datatype'           => 'itemlink',
-         'massiveaction'      => false,
-         'autocomplete'       => true,
-      ];
-
-      $tab[] = [
-         'id'                 => '2',
-         'table'              => $this->getTable(),
-         'field'              => 'id',
-         'name'               => __("ID"),
-         'massiveaction'      => false,
-         'datatype'           => 'number',
-      ];
-
-      $tab[] = [
-         'id'                 => '3',
-         'table'              => $this->getTable(),
-         'field'              => 'comment',
-         'name'               => __("Comments"),
-         'datatype'           => 'text',
-         'toview'             => true,
-         'massiveaction'      => true,
-      ];
-
-      $tab[] = [
-         'id'                 => '4',
-         'table'              => 'glpi_entities',
-         'field'              => 'completename',
-         'name'               => __("Entity"),
-         'datatype'           => 'dropdown',
-         'massiveaction'      => true,
-      ];
-
-      $tab[] = [
-         'id'                 => '5',
-         'table'              => $this->getTable(),
-         'field'              => 'is_recursive',
-         'name'               => __("Child entities"),
-         'datatype'           => 'bool',
-         'massiveaction'      => false,
-      ];
-
-      return $tab;
-   }
-
+        return $tab;
+    }
 }
